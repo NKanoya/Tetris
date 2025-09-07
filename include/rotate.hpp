@@ -9,8 +9,8 @@
 #include <array>
 
 struct Axis {
-    std::size_t x;
-    std::size_t y;
+    ptrdiff_t x;
+    ptrdiff_t y;
 };
 
 using BlockShape = std::array<Axis, 4>;
