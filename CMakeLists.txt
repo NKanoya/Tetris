@@ -3,10 +3,10 @@ project(Tetris)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# add_subdirectory(src/block_map)
+add_subdirectory(src/block_map)
 add_subdirectory(src/rotate)
 add_subdirectory(src/wall_kick)
-# add_subdirectory(src/tetromino)
+add_subdirectory(src/tetromino)
 
 # test instance
 # add_subdirectory(test/test_block_map)
