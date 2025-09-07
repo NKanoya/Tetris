@@ -203,7 +203,7 @@ void Tetromino::rotate(bool clockwise) noexcept {
         return;
     }
 
-    // else: employ wall-kick movement
+    // else: employ wall-kick displacement
     if(m_type == TetrominoType::tetro_I) {
         // get wall-kick attempt list
         auto& attempt_list = wall_kick_tetro_I(m_rotate_state,clockwise);

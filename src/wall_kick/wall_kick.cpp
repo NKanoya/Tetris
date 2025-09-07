@@ -26,25 +26,25 @@ static const std::array<const WallKickAttemptList, 4> wall_kick_attempts_for_tet
     {{{1,0},{-2,0},{1,-2},{-2,1}}}
 }};
 
-const WallKickAttemptList& wall_kick_normal(RotateState angle_state, bool clockwise) {
+const WallKickAttemptList& wall_kick_normal(RotateState rotate_state, bool clockwise) {
     if(clockwise) {
-        return wall_kick_attempts_for_normal[static_cast<size_t>(angle_state)];
+        return wall_kick_attempts_for_normal[static_cast<size_t>(rotate_state)];
     } else {
-        if(angle_state == RotateState::angle_270)
+        if(rotate_state == RotateState::angle_270)
             return wall_kick_attempts_for_normal[3];
         else
-            return wall_kick_attempts_for_normal[2 - static_cast<size_t>(angle_state)];
+            return wall_kick_attempts_for_normal[2 - static_cast<size_t>(rotate_state)];
     }
 }
 
 
-const WallKickAttemptList& wall_kick_tetro_I(RotateState angle_state, bool clockwise) {
+const WallKickAttemptList& wall_kick_tetro_I(RotateState rotate_state, bool clockwise) {
     if(clockwise) {
-        return wall_kick_attempts_for_normal[static_cast<size_t>(angle_state)];
+        return wall_kick_attempts_for_normal[static_cast<size_t>(rotate_state)];
     } else {
-        if(angle_state == RotateState::angle_270)
+        if(rotate_state == RotateState::angle_270)
             return wall_kick_attempts_for_normal[0];
         else
-            return wall_kick_attempts_for_normal[static_cast<size_t>(angle_state) + 1];
+            return wall_kick_attempts_for_normal[static_cast<size_t>(rotate_state) + 1];
     }
 }

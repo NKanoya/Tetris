@@ -49,7 +49,7 @@ protected:
     Axis m_axis;
 
     // enum class RotateState
-    // recorded to employ specific wall-kick movement when the rotation is blocked
+    // recorded to employ specific wall-kick displacement when the rotation is blocked
     RotateState m_rotate_state;
 
     // a weak pointer
@@ -132,7 +132,7 @@ protected:
     /**
      * @brief offsets a set of coordinates by a given displacement
      *
-     * @param origin_axis ( @c Axis& ): the axis to be offset
+     * @param origin_axis ( @c Axis& ): the axis to offset
      * @param displacement ( <b>const Axis&</b> )
      *
      * @see used in @c rotate()
@@ -155,7 +155,7 @@ protected:
     /**
      * @brief checks if there's enough space for the wall kick operation
      *
-     * check_space for the wall-kick movement
+     * check_space for the wall-kick displacement
      *
      * @param origin_dest ( <b>const BlockShape&</b> ): the original destination
      * @param wall_kick_disp ( <b>Axis</b> ): the wall-kick displacement
