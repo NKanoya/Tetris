@@ -84,11 +84,11 @@ static constexpr std::array<BlockShape, 7> tetromino_shape = {{
       {{{1,1},{0, 0}, {0, 1}, {1, 2}}},
 }};
 
-static constexpr BlockShape get_shape(TetrominoType type) noexcept {
+static constexpr BlockShape get_init_shape(TetrominoType type) noexcept {
     return tetromino_shape[static_cast<int>(type) - 1];
 }
 
-Tetromino::Tetromino(TetrominoType type, const Axis& axis, BlockMap * blockMap) noexcept
+Tetromino::Tetromino(TetrominoType type, const Axis& axis, RunningBlockMap * blockMap) noexcept
     : m_axis(axis),
       m_blockmap(blockMap),
       m_rotate_state(RotateState::angle_0)
@@ -99,12 +99,12 @@ Tetromino::Tetromino(TetrominoType type, const Axis& axis, BlockMap * blockMap) 
     }
 
     m_type = type;
-    m_blocks = get_shape(type);
+    m_blocks = get_init_shape(type);
 
 }
 
 void Tetromino::fall() noexcept {
-    if(m_axis.x + 4 == block_map_properties.y_size){
+    if(m_axis.x + 4 == bmap_prop.y_size){
         // the tetromino is bottoming out
         // notify the block map that the tetromino belongs to
         m_blockmap -> bottom_out();
@@ -156,7 +156,7 @@ void Tetromino::move_leftward() noexcept {
 
 void Tetromino::move_rightward() noexcept {
     // bound check
-    if(m_axis.y + 4 == block_map_properties.x_size)
+    if(m_axis.y + 4 == bmap_prop.x_size)
         return;         // fail to move
 
     // check if there is space on the right
@@ -191,7 +191,7 @@ void Tetromino::rotate(bool clockwise) noexcept {
     // traverse the block to check if any blocked
     for(auto& dest_axis: destination) {
         // if the rotation is
-        if(m_blockmap -> get_block(dest_axis) != TetrominoType::empty) {
+        if(m_blockmap -> get_block(dest_axis.x,dest_axis.y) != TetrominoType::empty) {
             is_rotation_blocked = true;
             break;
         }

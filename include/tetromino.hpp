@@ -7,8 +7,10 @@
 #ifndef TETRIS_TETROMINO_HPP
 #define TETRIS_TETROMINO_HPP
 
+class RunningBlockMap;
+
 #include <array>
-#include "map.hpp"
+#include "block_map.hpp"
 #include "rotate.hpp"        // for type BlockShape
 #include "wall_kick.hpp"     // for enum class
 
@@ -54,7 +56,7 @@ protected:
 
     // a weak pointer
     // points to the block map that possesses the tetromino
-    BlockMap * m_blockmap;
+    RunningBlockMap * m_blockmap;
 
 public:
 
@@ -67,7 +69,7 @@ public:
      * @param axis ( <code>const Axis&</code> ): the initial position in the map
      * @param blockMap ( <code>const Axis&</code> ): a weak pointer to its block map
      */
-    Tetromino(TetrominoType type, const Axis& axis, BlockMap * blockMap) noexcept;
+    Tetromino(TetrominoType type, const Axis& axis, RunningBlockMap * blockMap) noexcept;
 
     // deleted copy constructor and assignment operator
     Tetromino(const Tetromino& oth) = delete;
@@ -116,6 +118,14 @@ public:
      * @see the wall-kick logic is implemented in functions declared in @c wall_kick.hpp
      */
     void rotate(bool clockwise = true) noexcept;
+
+    inline const BlockShape& get_shape() const noexcept {
+        return m_blocks;
+    }
+
+    inline const Axis& get_axis() const noexcept {
+        return m_axis;
+    }
 
 protected:
 
