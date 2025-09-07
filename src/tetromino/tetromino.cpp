@@ -88,9 +88,9 @@ static constexpr BlockShape get_init_shape(TetrominoType type) noexcept {
     return tetromino_shape[static_cast<int>(type) - 1];
 }
 
-Tetromino::Tetromino(TetrominoType type, const Axis& axis, RunningBlockMap * blockMap) noexcept
+Tetromino::Tetromino(TetrominoType type, const Axis& axis, RunningBlockMatrix * BlockMatrix) noexcept
     : m_axis(axis),
-      m_blockmap(blockMap),
+      m_BlockMatrix(BlockMatrix),
       m_rotate_state(RotateState::angle_0)
 {
     if(type == TetrominoType::empty){
@@ -104,10 +104,10 @@ Tetromino::Tetromino(TetrominoType type, const Axis& axis, RunningBlockMap * blo
 }
 
 void Tetromino::fall() noexcept {
-    if(m_axis.x + 4 == bmap_prop.y_size){
+    if(m_axis.x + 4 == bmatrix_prop.y_size){
         // the tetromino is bottoming out
-        // notify the block map that the tetromino belongs to
-        m_blockmap -> bottom_out();
+        // notify the block matrix that the tetromino belongs to
+        m_BlockMatrix -> bottom_out();
     }
 
     // bound check: check if the tetromino have space below
@@ -115,7 +115,7 @@ void Tetromino::fall() noexcept {
     for(Axis& block: m_blocks){
         auto checked_x = m_axis.x + block.x + 1;
         auto checked_y = m_axis.y + block.x;
-        if(m_blockmap -> get_block(checked_x, checked_y) != TetrominoType::empty){
+        if(m_BlockMatrix -> get_block(checked_x, checked_y) != TetrominoType::empty){
             have_space_below = true;
             break;
         }
@@ -123,8 +123,8 @@ void Tetromino::fall() noexcept {
 
     if(have_space_below){
         // the tetromino is bottoming out
-        // notify the block map that the tetromino belongs to
-        m_blockmap -> bottom_out();
+        // notify the block matrix that the tetromino belongs to
+        m_BlockMatrix -> bottom_out();
     } else {
         // simply increase the y-axis by 1
         ++m_axis.x;
@@ -142,7 +142,7 @@ void Tetromino::move_leftward() noexcept {
     for(Axis& block: m_blocks){
         auto checked_x = m_axis.x + block.x;
         auto checked_y = m_axis.y + block.y - 1;
-        if(m_blockmap -> get_block(checked_x, checked_y) != TetrominoType::empty){
+        if(m_BlockMatrix -> get_block(checked_x, checked_y) != TetrominoType::empty){
             have_space_on_left = false;
             break;
         }
@@ -156,7 +156,7 @@ void Tetromino::move_leftward() noexcept {
 
 void Tetromino::move_rightward() noexcept {
     // bound check
-    if(m_axis.y + 4 == bmap_prop.x_size)
+    if(m_axis.y + 4 == bmatrix_prop.x_size)
         return;         // fail to move
 
     // check if there is space on the right
@@ -165,7 +165,7 @@ void Tetromino::move_rightward() noexcept {
     for(Axis& block: m_blocks){
         auto checked_x = m_axis.x + block.x;
         auto checked_y = m_axis.y + block.y + 1;
-        if(m_blockmap -> get_block(checked_x, checked_y) != TetrominoType::empty){
+        if(m_BlockMatrix -> get_block(checked_x, checked_y) != TetrominoType::empty){
             have_space_on_right = false;
             break;
         }
@@ -191,7 +191,7 @@ void Tetromino::rotate(bool clockwise) noexcept {
     // traverse the block to check if any blocked
     for(auto& dest_axis: destination) {
         // if the rotation is
-        if(m_blockmap -> get_block(dest_axis.x,dest_axis.y) != TetrominoType::empty) {
+        if(m_BlockMatrix -> get_block(dest_axis.x,dest_axis.y) != TetrominoType::empty) {
             is_rotation_blocked = true;
             break;
         }
@@ -273,7 +273,7 @@ bool Tetromino::check_space_for_wall_kick(const BlockShape &origin_dest, const A
         auto checked_x = axis.x + wall_kick_disp.x;
         auto checked_y = axis.y + wall_kick_disp.y;
 
-        if(m_blockmap -> get_block(checked_x,checked_y) != TetrominoType::empty) {
+        if(m_BlockMatrix -> get_block(checked_x,checked_y) != TetrominoType::empty) {
             return false;
         }
     }

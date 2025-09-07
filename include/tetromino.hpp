@@ -7,10 +7,10 @@
 #ifndef TETRIS_TETROMINO_HPP
 #define TETRIS_TETROMINO_HPP
 
-class RunningBlockMap;
+class RunningBlockMatrix;
 
 #include <array>
-#include "block_map.hpp"
+#include "matrix.hpp"
 #include "rotate.hpp"        // for type BlockShape
 #include "wall_kick.hpp"     // for enum class
 
@@ -28,7 +28,7 @@ enum class TetrominoType: unsigned char {
 /**
  * @brief Represents a tetromino, comprise of 4 blocks
  *
- * @ingroup @c RunningMap
+ * @ingroup @c RunningMatrix
  */
 class Tetromino {
 protected:
@@ -47,7 +47,7 @@ protected:
      */
     BlockShape m_blocks;
 
-    // the absolute axis of its [0, 0] block within the block map
+    // the absolute axis of its [0, 0] block within the block matrix
     Axis m_axis;
 
     // enum class RotateState
@@ -55,21 +55,21 @@ protected:
     RotateState m_rotate_state;
 
     // a weak pointer
-    // points to the block map that possesses the tetromino
-    RunningBlockMap * m_blockmap;
+    // points to the block matrix that possesses the tetromino
+    RunningBlockMatrix * m_BlockMatrix;
 
 public:
 
     /**
-     * construct a tetromino in a block map
+     * construct a tetromino in a block matrix
      *
-     * @ingroup a @c RunningMap class will store a tetromino with a @c std::unique_ptr
+     * @ingroup a @c RunningMatrix class will store a tetromino with a @c std::unique_ptr
      *
      * @param type ( @c TetrominoType ):
-     * @param axis ( <code>const Axis&</code> ): the initial position in the map
-     * @param blockMap ( <code>const Axis&</code> ): a weak pointer to its block map
+     * @param axis ( <code>const Axis&</code> ): the initial position in the matrix
+     * @param BlockMatrix ( <code>const Axis&</code> ): a weak pointer to its block matrix
      */
-    Tetromino(TetrominoType type, const Axis& axis, RunningBlockMap * blockMap) noexcept;
+    Tetromino(TetrominoType type, const Axis& axis, RunningBlockMatrix * BlockMatrix) noexcept;
 
     // deleted copy constructor and assignment operator
     Tetromino(const Tetromino& oth) = delete;

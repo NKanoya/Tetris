@@ -9,6 +9,6 @@ target_include_directories(tetromino
 target_link_libraries(tetromino
         PRIVATE rotate
         PRIVATE wall_kick
-        PRIVATE block_map
+        PRIVATE block_matrix
 
 )
