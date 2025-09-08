@@ -26,7 +26,6 @@ public:
 
     void update() noexcept;
 
-public:
 
     MatrixStateManager(const MatrixStateManager& ms) = delete;
     MatrixStateManager& operator==(const MatrixStateManager& ms) = delete;
@@ -37,10 +36,9 @@ private:
     static std::mutex m_mtx;
 
     // private constructor
-    MatrixStateManager(): m_current_matrix(), m_last_matrix(), m_updated() {}
+    MatrixStateManager(): m_running(), m_updated() {}
 
-    RunningBlockMatrix m_current_matrix;
-    RunningBlockMatrix m_last_matrix;
+    DoubleBuffer<RunningBlockMatrix> m_running;
     BlockMatrix m_updated;
 
     ~MatrixStateManager();

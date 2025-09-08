@@ -7,6 +7,8 @@
 #ifndef TETRIS_TETROMINO_HPP
 #define TETRIS_TETROMINO_HPP
 
+#include "double_buffer.hpp"
+
 class RunningBlockMatrix;
 
 #include <array>
@@ -23,6 +25,11 @@ enum class TetrominoType: unsigned char {
     tetro_L,
     tetro_S,
     tetro_Z
+};
+
+struct TetrominoPosition {
+    Axis axis;
+    BlockShape blocks;
 };
 
 /**
@@ -45,14 +52,13 @@ protected:
      * [2,0] [2,1] [2,2] [2,3]
      * [3,0] [3,1] [3,2] [3,3]
      */
-    BlockShape m_blocks;
-
-    // the absolute axis of its [0, 0] block within the block matrix
-    Axis m_axis;
 
     // enum class RotateState
     // recorded to employ specific wall-kick displacement when the rotation is blocked
     RotateState m_rotate_state;
+
+    DoubleBuffer<TetrominoPosition> m_position;
+
 
     // a weak pointer
     // points to the block matrix that possesses the tetromino
@@ -119,12 +125,12 @@ public:
      */
     void rotate(bool clockwise = true) noexcept;
 
-    inline const BlockShape& get_shape() const noexcept {
-        return m_blocks;
+    inline const TetrominoPosition& get_current_position() const noexcept {
+        return m_position.read_current();
     }
 
-    inline const Axis& get_axis() const noexcept {
-        return m_axis;
+    inline const TetrominoPosition& get_previous_position() const noexcept {
+        return m_position.read_previous();
     }
 
 protected:
@@ -171,7 +177,9 @@ protected:
      * @param wall_kick_disp ( <b>Axis</b> ): the wall-kick displacement
      * @return ( @c bool ): if the wall-kick operation have enough space
      */
-     bool check_space_for_wall_kick(const BlockShape& origin_dest, const Axis& wall_kick_disp) const noexcept;
+    bool check_space_for_wall_kick(const BlockShape& origin_dest, const Axis& wall_kick_disp) const noexcept;
+
+    void record_position();
 };
 
 static constexpr BlockShape get_shape(TetrominoType type) noexcept;

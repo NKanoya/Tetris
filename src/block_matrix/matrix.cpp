@@ -35,8 +35,8 @@ void RunningBlockMatrix::track_tetro() noexcept {
     // clear original blocks
 
 
-    auto& axis = m_tetro -> get_axis();
-    auto& shape = m_tetro -> get_shape();
+    auto& axis = m_tetro -> get_current_position().axis;
+    auto& shape = m_tetro -> get_current_position().blocks;
 
     for(auto& block: shape) {
         // TODO: remove the try-catch block by other strategies
