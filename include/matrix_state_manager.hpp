@@ -36,10 +36,10 @@ private:
     static std::mutex m_mtx;
 
     // private constructor
-    MatrixStateManager(): m_running(), m_updated() {}
+    MatrixStateManager(): m_running_matrix(), m_updated_matrix() {}
 
-    DoubleBuffer<RunningBlockMatrix> m_running;
-    BlockMatrix m_updated;
+    AdjacentStates<RunningBlockMatrix> m_running_matrix;
+    BlockMatrix m_updated_matrix;
 
     ~MatrixStateManager();
 };

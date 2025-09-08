@@ -1,10 +1,10 @@
 add_library(
-        test_double_buffer
-        test_double_buffer.cpp
+        test_adjacent_states
+        test_adjacent_states.cpp
 )
 
 target_include_directories(
-        test_double_buffer
+        test_adjacent_states
         PUBLIC ../../test
         PUBLIC ../../include
 )

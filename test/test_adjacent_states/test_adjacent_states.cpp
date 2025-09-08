@@ -3,13 +3,13 @@
 ///
 
 #include "../test_include.hpp"
-#include "../../include/double_buffer.hpp"
+#include "../../include/adjacent_states.hpp"
 
 
 namespace TetroTest {
     void test_double_buffer() {
-        std::cout << "Initialize a DoubleBuffer object with value 'Text 1'\n";
-        DoubleBuffer<std::string> db("Text 1");
+        std::cout << "Initialize a AdjacentStates object with value 'Text 1'\n";
+        AdjacentStates<std::string> db("Text 1");
         std::cout << "Print current: 'Text 1'\n";
         std::cout << db.read_current() << '\n';
 

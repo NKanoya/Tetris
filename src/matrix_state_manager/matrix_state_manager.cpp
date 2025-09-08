@@ -27,11 +27,11 @@ MatrixStateManager::~MatrixStateManager() {
 }
 
 const BlockMatrix& MatrixStateManager::get_current_matrix() const noexcept {
-    return m_current_matrix;
+    return m_running_matrix.read_current();
 }
 
 const BlockMatrix& MatrixStateManager::get_updated_matrix() const noexcept {
-    return m_last_matrix;
+    return m_updated_matrix;
 }
 
 void MatrixStateManager::update() noexcept {

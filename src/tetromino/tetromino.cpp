@@ -3,7 +3,7 @@
 ///
 
 #include "tetromino.hpp"
-#include "../../include/double_buffer.hpp"
+#include "../../include/adjacent_states.hpp"
 
 static constexpr std::array<BlockShape, 7> tetromino_shape = {{
       /*

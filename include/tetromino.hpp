@@ -7,7 +7,7 @@
 #ifndef TETRIS_TETROMINO_HPP
 #define TETRIS_TETROMINO_HPP
 
-#include "double_buffer.hpp"
+#include "adjacent_states.hpp"
 
 class RunningBlockMatrix;
 
@@ -57,7 +57,7 @@ protected:
     // recorded to employ specific wall-kick displacement when the rotation is blocked
     RotateState m_rotate_state;
 
-    DoubleBuffer<TetrominoPosition> m_position;
+    AdjacentStates<TetrominoPosition> m_position;
 
 
     // a weak pointer
