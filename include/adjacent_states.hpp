@@ -34,7 +34,7 @@ public:
     const T& update_current(Func&& write_func);
 
 
-private:
+protected:
     mutable std::shared_mutex mutex;
 
     std::unique_ptr<value_type> m_current;

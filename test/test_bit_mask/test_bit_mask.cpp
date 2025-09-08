@@ -11,8 +11,8 @@ namespace TetroTest {
     void test_bit_mask() {
         BitMask bt(10,10);
 
-        for(int i = 0; i < 10; ++i) {
-            bt.mark_dirty(i,i);
+        for(int i = 0; i < 9; ++i) {
+            bt.mark_dirty(i,i + 1);
         }
 
         for(int i = 0; i < 10; ++i) {
