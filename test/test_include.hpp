@@ -8,6 +8,7 @@
 namespace TetroTest {
     void test_matrix();
     void test_rotate();
+    void test_double_buffer();
 }
 
 

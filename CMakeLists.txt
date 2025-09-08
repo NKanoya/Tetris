@@ -11,12 +11,12 @@ add_subdirectory(src/matrix_state_manager)
 
 # test instance
 # add_subdirectory(test/test_block_matrix)
-add_subdirectory(test/test_rotate)
+# add_subdirectory(test/test_rotate)
+add_subdirectory(test/test_double_buffer)
 
 add_executable(
         Tetris
         main.cpp
-        include/matrix_state_manager.hpp
 )
 
 
@@ -29,5 +29,6 @@ target_link_libraries(Tetris
 
         # test instance
         # PRIVATE test_block_matrix
-        PRIVATE test_rotate
+        # PRIVATE test_rotate
+        PRIVATE test_double_buffer
 )
