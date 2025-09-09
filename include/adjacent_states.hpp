@@ -33,12 +33,24 @@ public:
     template<typename Func>
     const T& update_current(Func&& write_func);
 
+    AdjacentStates(AdjacentStates&& oth) noexcept:
+        m_current(std::move(oth.m_current)),
+        m_previous(std::move(oth.m_previous))
+    {}
+    AdjacentStates& operator=(AdjacentStates&& oth) noexcept {
+        m_current = std::move(oth.m_current);
+        m_previous = std::move(oth.m_previous);
+    }
+
 
 protected:
     mutable std::shared_mutex mutex;
 
     std::unique_ptr<value_type> m_current;
     std::unique_ptr<value_type> m_previous;
+
+    // for derived class to customize the initialization
+    AdjacentStates() = default;
 };
 
 template<typename T>
