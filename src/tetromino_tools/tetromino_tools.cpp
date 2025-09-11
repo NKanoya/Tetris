@@ -35,6 +35,34 @@ Tetromino TetrominoGenerator::new_tetromino(MatrixAdjacentStates * matrix_pair) 
     return Tetromino(type,{0,0},matrix_pair);
 }
 
+TetrominoesPair::TetrominoesPair(Tetromino&& tetro_current, Tetromino&& tetro_upcoming):
+        AdjacentStates<std::shared_ptr<Tetromino>>(),
+        m_current_tetro(m_previous),
+        m_upcoming_tetro(m_current) {
+    m_upcoming_tetro = std::make_unique<value_type>(std::make_shared<Tetromino>(std::move(tetro_upcoming)));
+    m_current_tetro = std::make_unique<value_type>(std::make_shared<Tetromino>(std::move(tetro_current)));
+}
+
+Tetromino& TetrominoesPair::get_current() noexcept {
+    return **m_current_tetro;
+}
+
+TetrominoType TetrominoesPair::get_upcoming_type() const noexcept {
+    return (*m_upcoming_tetro) -> get_type();
+}
+
+Tetromino &TetrominoesPair::replace_and_update(Tetromino &&new_upcoming) noexcept {
+    // moves the upcoming tetromino to become the new current
+    // the previous tetromino will be destructed
+    m_current_tetro = std::move(m_upcoming_tetro);
+    // accepts the provided tetromino as the new upcoming tetromino
+    
+    m_upcoming_tetro = std::make_unique<TetrominoPtr>(
+                    std::make_shared<Tetromino>(std::move(new_upcoming))
+                );
+    // return the new current tetromino
+    return **m_current_tetro;
+}
 
 
 static bool unique_in_history_queue(int random_result) {

@@ -9,6 +9,66 @@
 #include "tetromino.hpp"
 
 /**
+ * @brief a pair to store current and upcoming tetrominoes
+ */
+class TetrominoesPair: protected AdjacentStates<std::shared_ptr<Tetromino>> {
+public:
+
+    /**
+     * @brief Constructs a Tetrominoes pair with move semantics
+     *
+     * Tetromino objects are efficiently moved into the constructor using rvalue references,
+     * avoiding unnecessary copying and enabling optimal resource transfer.
+     *
+     * @param tetro_current ( @c Tetromino&& ) - Current tetromino to be moved into the pair
+     * @param tetro_upcoming ( @c Tetromino&& ) - Upcoming tetromino to be moved into the pair
+     */
+    TetrominoesPair(Tetromino&& tetro_current, Tetromino&& tetro_upcoming);
+
+    /**
+     * @brief get a modifiable non-constant reference of current tetromino
+     *
+     * the manager can track and operate this reference, to simulate a active tetromino
+     *
+     * @return @c Tetromino& : a non-constant reference of current tetromino
+     */
+    Tetromino& get_current() noexcept;
+
+    /**
+     * @brief get the type of the next upcoming tetromino
+     *
+     * @return @c TetrominoType
+     */
+    TetrominoType get_upcoming_type() const noexcept;
+
+    /**
+     * @brief advances the tetromino sequence by moving the upcoming tetromino to current
+     *        and setting a new upcoming tetromino
+     *
+     * operation sequence:
+     * 1. destructs the current tetromino
+     * 2. moves the upcoming tetromino to become the new current
+     * 3. accepts the provided tetromino as the new upcoming tetromino
+     *
+     * this operation efficiently updates the current-upcoming pair using move semantics,
+     * avoiding unnecessary copies of tetromino objects.
+     *
+     * @param new_upcoming ( @c Tetromino&& ) - New tetromino to set as the upcoming piece,
+     *        will be moved from and left in valid but unspecified state
+     * @return @c Tetromino& - Reference to the new current tetromino (previously upcoming)
+     */
+    Tetromino& replace_and_update(Tetromino&& new_upcoming) noexcept;
+
+protected:
+    using TetrominoPtr = std::shared_ptr<Tetromino>;
+    // alias of the member to improve readability
+    // the m_previous actually refers to the current tetromino pointer in this class
+    // similarly m_current refers to the upcoming tetromino pointer in the class
+    std::unique_ptr<TetrominoPtr>& m_current_tetro;
+    std::unique_ptr<TetrominoPtr>& m_upcoming_tetro;
+};
+
+/**
  *
  */
 class TetrominoGenerator {
