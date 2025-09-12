@@ -33,7 +33,18 @@ BlockMatrix::BlockMatrix():
 RunningBlockMatrix::RunningBlockMatrix(): BlockMatrix() {}
 
 void RunningBlockMatrix::track_tetro() noexcept {
+    // get previous position
+    auto& previous_position = m_tetro -> get_previous_position();
     // clear original blocks
+    for(auto& block: previous_position.blocks) {
+        // TODO: remove the try-catch block by other strategies
+        try {
+            get_block(previous_position.axis.x + block.x,previous_position.axis.y + block.y) = TetrominoType::empty;
+        } catch (const std::exception& e) {
+            std::cerr << e.what();
+        }
+
+    }
 
 
     auto& axis = m_tetro -> get_current_position().axis;
@@ -51,5 +62,12 @@ void RunningBlockMatrix::track_tetro() noexcept {
 
     // TODO: print error info to log
 }
+
+void RunningBlockMatrix::bottom_out(std::shared_ptr<Tetromino>& new_tetro, TetrominoType tetro_type) {
+    m_tetro = new_tetro;
+    m_tetro_type = tetro_type;
+}
+
+
 
 

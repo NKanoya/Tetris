@@ -64,6 +64,10 @@ Tetromino &TetrominoesPair::replace_and_update(Tetromino &&new_upcoming) noexcep
     return **m_current_tetro;
 }
 
+bool TetrominoesPair::is_current_bottom_out() const noexcept {
+    return (**(m_current_tetro)).is_bottom_out();
+}
+
 
 static bool unique_in_history_queue(int random_result) {
     static int list[3];

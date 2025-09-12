@@ -62,10 +62,11 @@ protected:
 
     AdjacentStates<TetrominoPosition> m_position;
 
+    bool m_is_bottom_out;
 
     // a weak pointer
     // points to the block matrix that possesses the tetromino
-    RunningBlockMatrix * m_BlockMatrix;
+    MatrixAdjacentStates * m_matrix_state_pair;
 
 public:
 
@@ -78,23 +79,37 @@ public:
      * @param axis ( <code>const Axis&</code> ): the initial position in the matrix
      * @param BlockMatrix ( <code>const Axis&</code> ): a weak pointer to its block matrix
      */
-    Tetromino(TetrominoType type, const Axis& axis, RunningBlockMatrix * BlockMatrix) noexcept;
+
+    // TODO: modify Running_Matrix to pair
+    Tetromino(TetrominoType type, const Axis& axis, MatrixAdjacentStates * matrix_pair) noexcept;
 
     // deleted copy constructor and assignment operator
     Tetromino(const Tetromino& oth) = delete;
     Tetromino& operator=(const Tetromino& oth) = delete;
 
     // default moving constructor and assignment operator
-    Tetromino(Tetromino&& oth) = default;
+    Tetromino(Tetromino&& oth) noexcept :
+        m_type(oth.m_type),
+        m_rotate_state(oth.m_rotate_state),
+        m_position(std::move(oth.m_position)),
+        m_is_bottom_out(oth.m_is_bottom_out),
+        m_matrix_state_pair(oth.m_matrix_state_pair)
+    {
+        oth.m_matrix_state_pair = nullptr;
+    }
     Tetromino& operator=(Tetromino&& oth) = default;
 
     /**
-     * @brief lets the tetromino fall (move downwards) 1 block
+     * @brief lets the tetromino move downwards by 1 block
      *
-     * <p>if the falling movement is blocked (bottoming out), it will notify its owner block
-     * to fix itself, and generate a new active tetromino.
+     * <p>if the moving movement is blocked (bottoming out), it will set the state sign @c
      */
-    void fall() noexcept;
+    void move_downwards() noexcept;
+
+    /**
+     * @brief directly drop until bottoming out
+     */
+    void drop() noexcept;
 
     /**
      * @brief lets tetromino move 1 block leftwards
@@ -134,6 +149,18 @@ public:
 
     inline const TetrominoPosition& get_previous_position() const noexcept {
         return m_position.read_previous();
+    }
+
+    inline bool is_bottom_out() const noexcept {
+        return m_is_bottom_out;
+    }
+
+    /**
+     *
+     * @see @c TetrominoesPair::get_upcoming_type()
+     */
+    inline TetrominoType get_type() const noexcept {
+        return m_type;
     }
 
 protected:

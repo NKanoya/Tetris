@@ -10,5 +10,6 @@ target_link_libraries(block_matrix
         PRIVATE tetromino
         PRIVATE rotate
         PRIVATE wall_kick
+        PRIVATE matrix_state_manager
 
 )

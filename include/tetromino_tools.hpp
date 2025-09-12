@@ -35,6 +35,18 @@ public:
     Tetromino& get_current() noexcept;
 
     /**
+     * @brief Get if the current tetromino is bottoming out
+     *
+     * @return @c bool
+     *
+     * @callchain @c MatrixStateManager::is_bottom_out() : calls this ( @c const ) function to get if the state
+     * of the tetromino in a @c const context
+     *
+     * @callchain @c Tetromino::is_bottom_out() : the target (forwarded) function
+     */
+    bool is_current_bottom_out() const noexcept;
+
+    /**
      * @brief get the type of the next upcoming tetromino
      *
      * @return @c TetrominoType

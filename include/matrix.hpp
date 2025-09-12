@@ -26,7 +26,7 @@ private:
 
     // private constructor and destructor
     BlockMatrixProperties();
-    ~BlockMatrixProperties();
+    ~BlockMatrixProperties() = default;
 public:
     // properties for the block matrix
     std::size_t x_size;    // vertical size
@@ -52,8 +52,9 @@ public:
     BlockMatrixProperties& operator=(const BlockMatrixProperties& oth) = delete;
 };
 
-auto& bmatrix_prop = BlockMatrixProperties::instance_read_only();
-
+namespace {
+    auto& bmatrix_prop = BlockMatrixProperties::instance_read_only();
+}
 
 class BlockMatrix {
 protected:
@@ -72,7 +73,7 @@ protected:
 public:
     RunningBlockMatrix();
     void track_tetro() noexcept;
-    void bottom_out();
+    void bottom_out(std::shared_ptr<Tetromino>& new_tetro, TetrominoType tetro_type);
 };
 
 inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const {

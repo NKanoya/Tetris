@@ -97,6 +97,16 @@ public:
      */
     Tetromino& new_tetromino() noexcept;
 
+    /**
+     * @brief check if the current tetromino is bottoming out
+     *
+     * @return @c bool
+     *
+     * @callchain this function -> @c TetrominoesPair::is_current_bottom_out() ->
+     * @c Tetromino::is_bottom_out
+     */
+    bool is_current_tetro_bottom_out() const noexcept;
+
     // deleted copy constructor and assignment operator
     MatrixStateManager(const MatrixStateManager& ms) = delete;
     MatrixStateManager& operator==(const MatrixStateManager& ms) = delete;

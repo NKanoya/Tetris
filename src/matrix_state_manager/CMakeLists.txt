@@ -11,5 +11,6 @@ target_link_libraries(matrix_state_manager
         PRIVATE block_matrix
         PRIVATE rotate
         PRIVATE wall_kick
+        PRIVATE bit_mask
 
 )

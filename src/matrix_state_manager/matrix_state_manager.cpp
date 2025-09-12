@@ -59,6 +59,10 @@ MatrixStateManager::MatrixStateManager():
         m_tetro_queue(TetrominoGenerator::new_tetromino(&m_running_matrix),
                       TetrominoGenerator::new_tetromino(&m_running_matrix)) {}
 
+bool MatrixStateManager::is_current_tetro_bottom_out() const noexcept {
+    return m_tetro_queue.is_current_bottom_out();
+}
+
 /**
  * @implements methods of class @c MatrixAdjacentStates
  */
