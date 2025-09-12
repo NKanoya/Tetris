@@ -70,10 +70,21 @@ class RunningBlockMatrix : public BlockMatrix {
 protected:
     std::shared_ptr<Tetromino> m_tetro;
     TetrominoType m_tetro_type;
+
+    mutable size_t m_completed_rows_number;
+    mutable std::array<size_t,4> m_completed_rows;
 public:
     RunningBlockMatrix();
-    void track_tetro() noexcept;
-    void bottom_out(std::shared_ptr<Tetromino>& new_tetro, TetrominoType tetro_type);
+
+    /**
+     *
+     * @return @c size_t : the numbers of the completed rows
+     */
+    size_t track_tetro() noexcept;
+
+    void check_completed_rows(const Axis& axis, const BlockShape& shape) const noexcept;
+
+    size_t clear_completed_rows() noexcept;
 };
 
 inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const {
