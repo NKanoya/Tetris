@@ -7,6 +7,8 @@
 
 #include "matrix.hpp"
 #include "bit_mask.hpp"
+#include "adjacent_states.hpp"
+#include "tetromino_tools.hpp"
 #include <vector>
 
 /**

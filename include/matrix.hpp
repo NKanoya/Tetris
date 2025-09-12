@@ -10,7 +10,6 @@ class Tetromino;
 
 #include <iostream>
 #include <memory>
-#include "tetromino.hpp"
 #include "rotate.hpp"
 
 /**

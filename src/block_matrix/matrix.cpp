@@ -3,6 +3,7 @@
 //
 
 #include "../../include/matrix.hpp"
+#include "tetromino.hpp"
 
 BlockMatrixProperties BlockMatrixProperties::m_instance;
 

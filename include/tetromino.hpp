@@ -7,14 +7,17 @@
 #ifndef TETRIS_TETROMINO_HPP
 #define TETRIS_TETROMINO_HPP
 
+class MatrixAdjacentStates;
+
 #include "adjacent_states.hpp"
-
-class RunningBlockMatrix;
-
 #include <array>
 #include "matrix.hpp"
 #include "rotate.hpp"        // for type BlockShape
 #include "wall_kick.hpp"     // for enum class
+#include "tetromino_tools.hpp"
+
+// avoid circle include
+// #include "matrix_state_manager.hpp"
 
 enum class TetrominoType: unsigned char {
     empty,
