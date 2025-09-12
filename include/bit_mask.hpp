@@ -10,16 +10,16 @@
 
 class BitMask {
     std::vector<uint32_t> bits; // 用32位整数存储位
-    int width, height;
+    size_t width, height;
 
 public:
-    BitMask(int w, int h)
+    BitMask(size_t w, size_t h)
             : width(w), height(h),
               bits((w * h + 31) / 32, 0) {}
 
-    void mark_dirty(int x, int y);
+    void mark_dirty(size_t x, size_t y);
 
-    bool is_dirty(int x, int y) const;
+    bool is_dirty(size_t x, size_t y) const;
 
     inline void clear() {
         std::fill(bits.begin(), bits.end(), 0);
