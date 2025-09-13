@@ -32,8 +32,8 @@ const BitMask& MatrixStateManager::get_modifies_bitmask() const noexcept {
     return m_modifies_bitmask;
 }
 
-void MatrixStateManager::update_modifies_bitmask() noexcept {
-    m_running_matrix.reload_modifies_bitmask(m_modifies_bitmask);
+size_t MatrixStateManager::update_modifies_bitmask() noexcept {
+    return m_running_matrix.reload_modifies_bitmask(m_modifies_bitmask);
 }
 
 Tetromino& MatrixStateManager::new_tetromino() noexcept {
@@ -46,8 +46,10 @@ Tetromino& MatrixStateManager::new_tetromino() noexcept {
                     std::move(TetrominoGenerator::new_tetromino(&m_running_matrix))
                 );
 
+    m_running_matrix;
+
     // update the info of the tetromino in the matrix pair
-    m_running_matrix.update_new_info_in_matrix_pair();
+    m_running_matrix.update_tetro_in_matrix_pair(m_tetro_queue.get_tetromino_shared_ptr());
 
     return return_tetro;
 }
@@ -68,22 +70,67 @@ bool MatrixStateManager::is_current_tetro_bottom_out() const noexcept {
 }
 
 bool MatrixStateManager::check_failed(size_t return_value) const noexcept {
-    return m_running_matrix.read_current().is_game_over();
+    if(return_value == BlockMatrixProperties::instance_read_only().check_failed_signal)
+        return m_running_matrix.read_current().is_game_over();
+
+    return false;
 }
 
+MatrixStateManager::ProcessData MatrixStateManager::process_operation(Operation op) noexcept {
+    switch(op) {
+        case Operation::Drop:
+            m_tetro_queue.get_current().drop();
+            break;
+        case Operation::Left:
+            m_tetro_queue.get_current().move_leftward();
+            break;
+        case Operation::Right:
+            m_tetro_queue.get_current().move_rightward();
+            break;
+        case Operation::RotateCW:
+            m_tetro_queue.get_current().rotate(true);
+            break;
+        case Operation::RotateCCW:
+            m_tetro_queue.get_current().rotate(false);
+            break;
+        default:
+            m_tetro_queue.get_current().move_downwards();
+            break;
+    }
 
 
+    auto return_value = update_modifies_bitmask();
+
+    if(is_current_tetro_bottom_out()) {
+        // the game failed;
+        if(check_failed(return_value)) {
+            if(is_current_tetro_bottom_out()) {
+                // TODO: add the logic of game failed
+
+                update_modifies_bitmask();
+                return {get_modifies_bitmask(), 0,true};
+            }
+        }
+
+        // generate a new tetromino
+        new_tetromino();
+        size_t cleared_rows = update_modifies_bitmask();
+        return {m_modifies_bitmask, cleared_rows,false};
+    }
+
+    return {get_modifies_bitmask(), 0,false};
+}
 
 
 /**
  * @implements methods of class @c MatrixAdjacentStates
  */
 
-void MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask) noexcept {
+size_t MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask) noexcept {
     // cover previous matrix with current state
     cover_previous(recording_bitmask);
     // track current matrix
-    m_current -> track_tetro();
+    auto cleared_rows = m_current -> track_tetro();
     // clear the updated-state matrix
     recording_bitmask.clear();
     // traverse all blocks in the matrix
@@ -95,6 +142,8 @@ void MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask) n
                 recording_bitmask.mark_dirty(i,j);
         }
     }
+
+    return cleared_rows;
 
 }
 
@@ -113,7 +162,10 @@ void MatrixAdjacentStates::cover_previous(const BitMask& bit_mask) noexcept {
     m_previous -> m_over_buffer = m_current -> m_over_buffer;
 }
 
-void MatrixAdjacentStates::update_new_info_in_matrix_pair() noexcept {
+void MatrixAdjacentStates::update_tetro_in_matrix_pair(const std::shared_ptr<Tetromino>& new_tetro_ptr) noexcept {
+    m_current -> m_tetro = new_tetro_ptr;
+    m_current -> m_tetro_type = new_tetro_ptr -> get_type();
+
     // update the pointer and the type records of the tetromino
     m_previous -> m_tetro = m_current -> m_tetro;
     m_previous -> m_tetro_type = m_current -> m_tetro_type;

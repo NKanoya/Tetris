@@ -10,6 +10,7 @@ add_subdirectory(src/wall_kick)
 add_subdirectory(src/tetromino)
 add_subdirectory(src/bit_mask)
 add_subdirectory(src/tetromino_tools)
+add_subdirectory(src/operation)
 
 # test instance
 # add_subdirectory(test/test_block_matrix)
@@ -32,6 +33,7 @@ target_link_libraries(Tetris
         PRIVATE matrix_state_manager
         PRIVATE bit_mask
         PRIVATE tetromino_tools
+        PRIVATE operation
 
         # test instance
 #         PRIVATE test_block_matrix

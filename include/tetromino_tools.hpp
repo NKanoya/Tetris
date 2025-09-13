@@ -35,6 +35,18 @@ public:
     Tetromino& get_current() noexcept;
 
     /**
+     * @brief get a modifiable non-constant shared pointer of current tetromino
+     *
+     * @return <code>std::shared_ptr&lt;Tetromino>&</code>
+     *
+     * @see used in @c MatrixStateManager::new_tetromino()
+     */
+    inline std::shared_ptr<Tetromino>& get_tetromino_shared_ptr() noexcept {
+        return *m_current_tetro;
+    }
+
+
+    /**
      * @brief Get if the current tetromino is bottoming out
      *
      * @return @c bool

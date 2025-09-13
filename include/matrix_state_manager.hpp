@@ -10,6 +10,7 @@
 #include "adjacent_states.hpp"
 #include "tetromino_tools.hpp"
 #include <vector>
+#include "operation.hpp"
 
 /**
  * @brief a specialized wrapper of class @c AdjacentStates
@@ -52,9 +53,9 @@ public:
      * @note The bitmask is completely cleared and rebuilt, making this operation suitable for
      *       full state resynchronization rather than incremental updates.
      */
-    void reload_modifies_bitmask(BitMask& recording_bitmask) noexcept;
+    size_t reload_modifies_bitmask(BitMask& recording_bitmask) noexcept;
 
-    void update_new_info_in_matrix_pair() noexcept;
+    void update_tetro_in_matrix_pair(const std::shared_ptr<Tetromino>& new_tetro_ptr) noexcept;
 };
 
 /*
@@ -64,6 +65,15 @@ public:
  * have benn updated in this tick)
  */
 class MatrixStateManager {
+public:
+    struct ProcessData {
+        const BitMask& bit_mask;
+        size_t cleared_rows;
+        bool is_game_over;
+    };
+
+    ProcessData process_operation(Operation op) noexcept;
+
 public:
     // use the instance
     static MatrixStateManager& instance();
@@ -89,7 +99,7 @@ public:
      *
      * @see to get the matrix, call @c get_modifies_bitmask()
      */
-    void update_modifies_bitmask() noexcept;
+    size_t update_modifies_bitmask() noexcept;
 
     /**
      * @brief Advances the tetromino queue by moving the upcoming tetromino to current
