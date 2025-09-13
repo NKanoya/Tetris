@@ -11,7 +11,8 @@ BlockMatrixProperties BlockMatrixProperties::m_instance;
 BlockMatrixProperties::BlockMatrixProperties()  :
     x_size(22),
     y_size(10),
-    x_buffer_size(2) {}
+    x_buffer_size(2),
+    check_failed_signal(114514) {}
 
 BlockMatrixProperties& BlockMatrixProperties::instance() noexcept {
     return m_instance;
@@ -34,7 +35,8 @@ BlockMatrix::BlockMatrix():
 RunningBlockMatrix::RunningBlockMatrix():
     BlockMatrix(),
     m_tetro_type(m_tetro->get_type()),
-    m_completed_rows_number(0)  {}
+    m_completed_rows_number(0),
+    m_over_buffer(false) {}
 
 size_t RunningBlockMatrix::track_tetro() noexcept {
     // get previous position
@@ -47,7 +49,6 @@ size_t RunningBlockMatrix::track_tetro() noexcept {
         } catch (const std::exception& e) {
             std::cerr << e.what();
         }
-
     }
 
     // traverse the blocks and shape
@@ -63,6 +64,16 @@ size_t RunningBlockMatrix::track_tetro() noexcept {
             std::cerr << e.what();
         }
 
+    }
+
+    // check if the game is lost
+    for(auto& block: shape) {
+        if(axis.x + block.x < BlockMatrixProperties::instance_read_only().x_buffer_size){
+            // the game is lost
+            m_over_buffer = true;
+            // return a failed signal value
+            return BlockMatrixProperties::instance_read_only().check_failed_signal;
+        }
     }
 
     // check if there is completed rows

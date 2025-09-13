@@ -33,6 +33,10 @@ public:
     std::size_t y_size;    // horizontal size
     std::size_t x_buffer_size;
 
+
+public:
+    const std::size_t check_failed_signal;
+
     /**
      * @brief get the modifiable instance of the class @c BlockMatrixProperties
      *
@@ -73,6 +77,7 @@ protected:
 
     mutable size_t m_completed_rows_number;
     mutable std::array<size_t,4> m_completed_rows;
+    bool m_over_buffer;
 public:
     RunningBlockMatrix();
 
@@ -85,6 +90,10 @@ public:
     void check_completed_rows(const Axis& axis, const BlockShape& shape) const noexcept;
 
     size_t clear_completed_rows() noexcept;
+
+    inline bool is_game_over() const noexcept {
+        return m_over_buffer;
+    }
 };
 
 inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const {

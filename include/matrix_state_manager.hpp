@@ -107,6 +107,8 @@ public:
      */
     bool is_current_tetro_bottom_out() const noexcept;
 
+    bool check_failed(size_t return_value) const noexcept;
+
     // deleted copy constructor and assignment operator
     MatrixStateManager(const MatrixStateManager& ms) = delete;
     MatrixStateManager& operator==(const MatrixStateManager& ms) = delete;

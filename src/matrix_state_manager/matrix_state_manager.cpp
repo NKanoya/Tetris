@@ -63,6 +63,14 @@ bool MatrixStateManager::is_current_tetro_bottom_out() const noexcept {
     return m_tetro_queue.is_current_bottom_out();
 }
 
+bool MatrixStateManager::check_failed(size_t return_value) const noexcept {
+    return m_running_matrix.read_current().is_game_over();
+}
+
+
+
+
+
 /**
  * @implements methods of class @c MatrixAdjacentStates
  */
