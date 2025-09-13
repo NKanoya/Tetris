@@ -171,6 +171,9 @@ size_t RunningBlockMatrix::clear_completed_rows() noexcept {
         }
     }
 
+    // make the sign back to 0
+    m_completed_rows_number = 0;
+
     return completed_number;
 }
 
