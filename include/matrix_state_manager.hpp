@@ -53,6 +53,8 @@ public:
      *       full state resynchronization rather than incremental updates.
      */
     void reload_modifies_bitmask(BitMask& recording_bitmask) noexcept;
+
+    void update_new_info_in_matrix_pair() noexcept;
 };
 
 /*

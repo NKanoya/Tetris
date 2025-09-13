@@ -36,7 +36,8 @@ RunningBlockMatrix::RunningBlockMatrix():
     BlockMatrix(),
     m_tetro_type(m_tetro->get_type()),
     m_completed_rows_number(0),
-    m_over_buffer(false) {}
+    m_over_buffer(false),
+    m_completed_rows(4) {}
 
 size_t RunningBlockMatrix::track_tetro() noexcept {
     // get previous position
@@ -66,26 +67,26 @@ size_t RunningBlockMatrix::track_tetro() noexcept {
 
     }
 
-    // check if the game is lost
-    for(auto& block: shape) {
-        if(axis.x + block.x < BlockMatrixProperties::instance_read_only().x_buffer_size){
-            // the game is lost
-            m_over_buffer = true;
-            // return a failed signal value
-            return BlockMatrixProperties::instance_read_only().check_failed_signal;
+    if(m_tetro -> is_bottom_out()) {
+        // check if the game is lost
+        for(auto& block: shape) {
+            if(axis.x + block.x < BlockMatrixProperties::instance_read_only().x_buffer_size){
+                // the game is lost
+                m_over_buffer = true;
+                // return a failed signal value
+                return BlockMatrixProperties::instance_read_only().check_failed_signal;
+            }
+        }
+
+        // check if there is completed rows
+        check_completed_rows(axis, shape);
+        if(m_completed_rows_number != 0) {
+            auto completed_lines = clear_completed_rows();
+            return completed_lines;
         }
     }
 
-    // check if there is completed rows
-    check_completed_rows(axis, shape);
-    if(m_completed_rows_number != 0) {
-        auto completed_lines = clear_completed_rows();
-        return completed_lines;
-    }
-    else {
-        return 0;
-    }
-
+    return 0;
 }
 
 void RunningBlockMatrix::check_completed_rows(const Axis& axis, const BlockShape& shape) const noexcept {

@@ -40,12 +40,18 @@ void MatrixStateManager::update_modifies_bitmask() noexcept {
 
 Tetromino& MatrixStateManager::new_tetromino() noexcept {
     // call the replace_and_update() function of the tetrominoes queue
-    return m_tetro_queue.replace_and_update(
-                // - use the tool function TetrominoGenerator::new_tetromino to generate two tetrominoes
-                // with random types
-                // - pass the raw pointer of the MatrixAdjacentStates which possesses them
-                std::move(TetrominoGenerator::new_tetromino(&m_running_matrix))
-            );
+    auto& return_tetro =
+                m_tetro_queue.replace_and_update(
+                    // - use the tool function TetrominoGenerator::new_tetromino to generate two tetrominoes
+                    // with random types
+                    // - pass the raw pointer of the MatrixAdjacentStates which possesses them
+                    std::move(TetrominoGenerator::new_tetromino(&m_running_matrix))
+                );
+
+    // update the info of the tetromino in the matrix pair
+    m_running_matrix.update_new_info_in_matrix_pair();
+
+    return return_tetro;
 }
 
 MatrixStateManager::MatrixStateManager():
@@ -102,7 +108,16 @@ void MatrixAdjacentStates::cover_previous(const BitMask& bit_mask) noexcept {
             }
         }
     }
+
+    m_previous -> m_completed_rows_number = m_current -> m_completed_rows_number;
+    m_previous -> m_completed_rows = m_current -> m_completed_rows;
+    m_previous -> m_over_buffer = m_current -> m_over_buffer;
 }
 
+void MatrixAdjacentStates::update_new_info_in_matrix_pair() noexcept {
+    // update the pointer and the type records of the tetromino
+    m_previous -> m_tetro = m_current -> m_tetro;
+    m_previous -> m_tetro_type = m_current -> m_tetro_type;
+}
 
 

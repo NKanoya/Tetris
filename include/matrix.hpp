@@ -11,6 +11,7 @@ class Tetromino;
 #include <iostream>
 #include <memory>
 #include "rotate.hpp"
+#include <vector>
 
 /**
  * @brief stores universal properties of block matrix
@@ -76,7 +77,7 @@ protected:
     TetrominoType m_tetro_type;
 
     mutable size_t m_completed_rows_number;
-    mutable std::array<size_t,4> m_completed_rows;
+    mutable std::vector<size_t> m_completed_rows;
     bool m_over_buffer;
 public:
     RunningBlockMatrix();
@@ -94,6 +95,8 @@ public:
     inline bool is_game_over() const noexcept {
         return m_over_buffer;
     }
+
+    friend class MatrixAdjacentStates;
 };
 
 inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const {
