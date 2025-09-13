@@ -27,7 +27,7 @@ BlockMatrix::BlockMatrix():
     m_matrix(new TetrominoType[(bmatrix_prop.x_size) * bmatrix_prop.y_size])
 {
     // initialize all the blocks
-    for(int i = 0; i < bmatrix_prop.x_size * bmatrix_prop.y_size; i++) {
+    for(size_t i = 0; i < bmatrix_prop.x_size * bmatrix_prop.y_size; i++) {
         m_matrix[i] = TetrominoType::empty;
     }
 }
@@ -141,10 +141,9 @@ size_t RunningBlockMatrix::clear_completed_rows() noexcept {
     using RowPtr = TetrominoType (*)[BlockMatrixProperties::instance_read_only().y_size];
     auto height = BlockMatrixProperties::instance_read_only().x_size;
     bool rows_to_clear[height];
-    size_t lowest_row_to_clear = 0;
     std::fill(rows_to_clear, rows_to_clear + height, false);
 
-    for(int i = 0; i < completed_number; ++i) {
+    for(size_t i = 0; i < completed_number; ++i) {
         // get the indexes of the rows to be cleared
         auto row_number = m_completed_rows[i];
         // sign their index by true

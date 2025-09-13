@@ -6,8 +6,6 @@
 #include "../../include/matrix_state_manager.hpp"
 #include <mutex>
 
-
-
 MatrixStateManager* MatrixStateManager::m_instance = nullptr;
 std::mutex MatrixStateManager::m_mtx{};
 
@@ -89,8 +87,8 @@ void MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask) n
     // clear the updated-state matrix
     recording_bitmask.clear();
     // traverse all blocks in the matrix
-    for(int i = 0; i < BlockMatrixProperties::instance_read_only().x_size; ++i) {
-        for(int j = 0; j < BlockMatrixProperties::instance_read_only().y_size; ++j) {
+    for(size_t i = 0; i < BlockMatrixProperties::instance_read_only().x_size; ++i) {
+        for(size_t j = 0; j < BlockMatrixProperties::instance_read_only().y_size; ++j) {
             // check if the pixel changes
             if(m_current -> get_block(i,j) != m_previous -> get_block(i,j) )
                 // record in the recording_bitmask
@@ -101,14 +99,15 @@ void MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask) n
 }
 
 void MatrixAdjacentStates::cover_previous(const BitMask& bit_mask) noexcept {
-    for(int i = 0; i < BlockMatrixProperties::instance_read_only().x_size; ++i){
-        for(int j = 0; j < BlockMatrixProperties::instance_read_only().y_size; ++j) {
+    for(size_t i = 0; i < BlockMatrixProperties::instance_read_only().x_size; ++i){
+        for(size_t j = 0; j < BlockMatrixProperties::instance_read_only().y_size; ++j) {
             if(bit_mask.is_dirty(i,j)) {
                 m_previous -> get_block(i,j) = m_current -> get_block(i,j);
             }
         }
     }
 
+    // TODO: refactor this to avoid copy (e.g. make these shared between states)
     m_previous -> m_completed_rows_number = m_current -> m_completed_rows_number;
     m_previous -> m_completed_rows = m_current -> m_completed_rows;
     m_previous -> m_over_buffer = m_current -> m_over_buffer;
