@@ -126,8 +126,6 @@ public:
     MatrixStateManager& operator==(const MatrixStateManager& ms) = delete;
 
 private:
-    // Singleton properties
-    static MatrixStateManager* m_instance;
     // mutex
     static std::mutex m_mtx;
     // running matrix: including both its current and previous states

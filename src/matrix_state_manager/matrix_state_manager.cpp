@@ -6,23 +6,14 @@
 #include "../../include/matrix_state_manager.hpp"
 #include <mutex>
 
-MatrixStateManager* MatrixStateManager::m_instance = nullptr;
 std::mutex MatrixStateManager::m_mtx{};
 
 MatrixStateManager& MatrixStateManager::instance() {
-    if(m_instance == nullptr) {
-        // std::lock_guard<std::mutex> lock(m_mtx);
-        if(m_instance == nullptr) {
-            m_instance = new MatrixStateManager();
-        }
-    }
-
-    return *m_instance;
+    static MatrixStateManager instance;
+    return instance;
 }
 
-MatrixStateManager::~MatrixStateManager() {
-    delete m_instance;
-}
+MatrixStateManager::~MatrixStateManager() = default;
 
 const BlockMatrix& MatrixStateManager::get_current_matrix() const noexcept {
     return m_running_matrix.read_current();
