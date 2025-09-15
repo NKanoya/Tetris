@@ -85,8 +85,11 @@ MatrixStateManager::ProcessData MatrixStateManager::process_operation(Operation 
         case Operation::RotateCCW:
             m_tetro_queue.get_current().rotate(false);
             break;
-        default:
+        case Operation::Down:
             m_tetro_queue.get_current().move_downwards();
+            break;
+        default:
+            // None
             break;
     }
 

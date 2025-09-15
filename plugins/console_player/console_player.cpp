@@ -1,4 +1,11 @@
 #include "console_player.hpp"
+#include "../../include/operation.hpp"
+#ifdef _WIN32
+    #include <conio.h>
+#else
+    #include <termios.h>
+    #include <unistd.h>
+#endif
 
 
 /**
@@ -41,4 +48,48 @@ namespace ConsolePlayer {
         output_matrix(data.matrix);
     }
 
+    //
+    // ConsoleScanner
+    //
+    Operation ConsoleScanner::input() {
+        char c;
+#ifdef _WIN32
+        c = _getch();
+#else
+        termios oldt, newt;
+        tcgetattr(STDIN_FILENO, &oldt);
+
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+
+        newt.c_cc[VMIN] = 1;
+        newt.c_cc[VTIME] = 0;
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+        read(STDIN_FILENO, &c, 1);
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+#endif
+
+        switch(c) {
+            case 'A':
+            case 'a':
+                return Operation::Left;
+            case 'D':
+            case 'd':
+                return Operation::Right;
+            case 'E':
+            case 'e':
+                return Operation::RotateCCW;
+            case 'Q':
+            case 'q':
+                return Operation::RotateCCW;
+            case 'S':
+            case 's':
+                return Operation::Drop;
+            default: return Operation::None;
+        }
+
+    }
 }

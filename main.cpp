@@ -6,7 +6,7 @@
 
 int main() {
     try {
-        TetroTest::test_console_player();
+        TetroTest::test_console_input();
     } catch (std::exception& e) {
         std::cerr << e.what();
     }

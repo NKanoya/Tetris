@@ -25,8 +25,9 @@ namespace ConsolePlayer {
         const size_t* prop_buffer_size_ptr;
     };
 
-    class ConsoleInput {
-
+    class ConsoleScanner {
+    public:
+        Operation input();
     };
 
 
