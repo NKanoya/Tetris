@@ -15,7 +15,7 @@ MatrixStateManager& MatrixStateManager::instance() {
 
 MatrixStateManager::~MatrixStateManager() = default;
 
-const BlockMatrix& MatrixStateManager::get_current_matrix() const noexcept {
+const RunningBlockMatrix& MatrixStateManager::get_current_matrix() const noexcept {
     return m_running_matrix.read_current();
 }
 
@@ -46,15 +46,16 @@ Tetromino& MatrixStateManager::new_tetromino() noexcept {
 }
 
 MatrixStateManager::MatrixStateManager():
-        m_running_matrix(),
-        // create an updated bitmap with the same size of running matrix
-        m_modifies_bitmask(BlockMatrixProperties::instance_read_only().x_size,
-                           BlockMatrixProperties::instance_read_only().y_size),
         // initialize the tetrominoes queue
         // use the tool function TetrominoGenerator::new_tetromino to generate two tetrominoes with random types
         // pass the raw pointer of the MatrixAdjacentStates which possesses them
         m_tetro_queue(TetrominoGenerator::new_tetromino(&m_running_matrix),
-                      TetrominoGenerator::new_tetromino(&m_running_matrix)) {}
+                      TetrominoGenerator::new_tetromino(&m_running_matrix)),
+        m_running_matrix(RunningBlockMatrix(m_tetro_queue.get_tetromino_shared_ptr())),
+        // create an updated bitmap with the same size of running matrix
+        m_modifies_bitmask(BlockMatrixProperties::instance_read_only().x_size,
+                           BlockMatrixProperties::instance_read_only().y_size)
+        {}
 
 bool MatrixStateManager::is_current_tetro_bottom_out() const noexcept {
     return m_tetro_queue.is_current_bottom_out();

@@ -26,7 +26,8 @@ public:
     /**
      * @brief Constructs a wrapper of adjacent states of a matrix
      */
-    MatrixAdjacentStates(): AdjacentStates<RunningBlockMatrix>() {}
+    MatrixAdjacentStates(RunningBlockMatrix&& current)
+    : AdjacentStates<RunningBlockMatrix>(std::move(current)) {}
 
     /**
      * @brief Applies incremental updates from the current state to the previous state using a bitmask
@@ -79,7 +80,7 @@ public:
     // use the instance
     static MatrixStateManager& instance();
 
-    const BlockMatrix& get_current_matrix() const noexcept;
+    const RunningBlockMatrix& get_current_matrix() const noexcept;
 
     /**
      * @brief gets the bitmask signing all the updated pixels
@@ -129,12 +130,13 @@ public:
 private:
     // mutex
     static std::mutex m_mtx;
+
+    // the current and upcoming tetrominoes
+    TetrominoesPair m_tetro_queue;
     // running matrix: including both its current and previous states
     MatrixAdjacentStates m_running_matrix;
     // the bit mask of updated pixels
     BitMask m_modifies_bitmask;
-    // the current and upcoming tetrominoes
-    TetrominoesPair m_tetro_queue;
 
     // private constructor
     MatrixStateManager();
