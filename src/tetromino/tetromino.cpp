@@ -141,11 +141,44 @@ void Tetromino::move_downwards() noexcept {
     }
 }
 
+static bool have_below_space(AdjacentStates<TetrominoPosition>& position_pair, MatrixAdjacentStates* matrix_pair);
+
 void Tetromino::drop() noexcept {
     // move downwards until bottoming out
-    do {
-       move_downwards();
-    } while(!m_is_bottom_out);
+    bool first_record = true;
+    while(have_below_space(m_position,m_matrix_state_pair)) {
+        using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
+        m_position.update_current(
+                [&first_record](TetroPosPtr& previous, TetroPosPtr& current){
+                    if(first_record) {
+                        *previous = *current;
+                        first_record = false;
+                    }
+                    // no copy
+                },
+                [](TetrominoPosition& position){
+                    ++position.axis.x;
+                }
+        );
+    }
+    m_is_bottom_out = true;
+}
+
+static bool have_below_space(AdjacentStates<TetrominoPosition>& position_pair, MatrixAdjacentStates* matrix_pair) {
+    auto& prop = BlockMatrixProperties::instance();
+    for(auto& block: position_pair.read_current().blocks){
+        auto checked_x = position_pair.read_current().axis.x + block.x + 1;
+        auto checked_y = position_pair.read_current().axis.y + block.y;
+        // bouond check: if the tetromino overflows
+        if(checked_x >= prop.x_size || checked_x < 0) {
+            return false;
+        }
+        auto tetro = matrix_pair -> read_current().get_block(checked_x, checked_y);
+        if(tetro != TetrominoType::empty && tetro != TetrominoType::tetro_active){
+            return false;
+        }
+    }
+    return true;
 }
 
 void Tetromino::move_leftward() noexcept {
