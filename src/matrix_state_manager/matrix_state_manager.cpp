@@ -89,7 +89,6 @@ MatrixStateManager::ProcessData MatrixStateManager::process_operation(Operation 
             break;
     }
 
-
     auto return_value = update_modifies_bitmask();
 
     if(is_current_tetro_bottom_out()) {
@@ -99,17 +98,17 @@ MatrixStateManager::ProcessData MatrixStateManager::process_operation(Operation 
                 // TODO: add the logic of game failed
 
                 update_modifies_bitmask();
-                return {get_modifies_bitmask(), 0,true};
+                return {get_modifies_bitmask(), get_current_matrix(), 0, true};
             }
         }
 
         // generate a new tetromino
         new_tetromino();
         size_t cleared_rows = update_modifies_bitmask();
-        return {m_modifies_bitmask, cleared_rows,false};
+        return {m_modifies_bitmask, get_current_matrix(), cleared_rows,false};
     }
 
-    return {get_modifies_bitmask(), 0,false};
+    return {get_modifies_bitmask(), get_current_matrix(), 0,false};
 }
 
 

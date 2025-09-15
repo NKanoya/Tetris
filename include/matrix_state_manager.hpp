@@ -68,6 +68,7 @@ class MatrixStateManager {
 public:
     struct ProcessData {
         const BitMask& bit_mask;
+        const RunningBlockMatrix& matrix;
         size_t cleared_rows;
         bool is_game_over;
     };
