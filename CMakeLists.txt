@@ -12,12 +12,16 @@ add_subdirectory(src/bit_mask)
 add_subdirectory(src/tetromino_tools)
 add_subdirectory(src/operation)
 
+# plugins
+add_subdirectory(plugins/console_output)
+
 # test instance
 # add_subdirectory(test/test_block_matrix)
 # add_subdirectory(test/test_rotate)
 # add_subdirectory(test/test_adjacent_states)
 # add_subdirectory(test/test_bit_mask)
-add_subdirectory(test/test_tetromino_tools)
+# add_subdirectory(test/test_tetromino_tools)
+add_subdirectory(test/test_console_output)
 
 add_executable(
         Tetris
@@ -35,12 +39,16 @@ target_link_libraries(Tetris
         PRIVATE tetromino_tools
         PRIVATE operation
 
+        # plugins
+        PRIVATE console_output
+
         # test instance
-#         PRIVATE test_block_matrix
-#         PRIVATE test_rotate
-#         PRIVATE test_adjacent_states
-#         PRIVATE test_bit_mask
-        PRIVATE test_tetromino_tools
+#       PRIVATE test_block_matrix
+#       PRIVATE test_rotate
+#       PRIVATE test_adjacent_states
+#       PRIVATE test_bit_mask
+#       PRIVATE test_tetromino_tools
+        PRIVATE test_console_output
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -save-temps=obj")
