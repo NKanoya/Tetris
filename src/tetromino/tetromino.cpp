@@ -100,33 +100,11 @@ Tetromino::Tetromino(TetrominoType type, const Axis& axis, MatrixAdjacentStates 
     // TODO: print warning info into log
 }
 
+static bool have_below_space(AdjacentStates<TetrominoPosition>& position_pair, MatrixAdjacentStates* matrix_pair);
+
 void Tetromino::move_downwards() noexcept {
     // bound check: check if the tetromino have space below
-    bool is_blocked = false;
-    auto& prop = BlockMatrixProperties::instance();
-    for(auto& block: m_position.read_current().blocks){
-        auto checked_x = m_position.read_current().axis.x + block.x + 1;
-        auto checked_y = m_position.read_current().axis.y + block.y;
-        // bouond check: if the tetromino overflows
-        if(checked_x >= prop.x_size || checked_x < 0) {
-            is_blocked = true;
-            break;
-        }
-        if(checked_y > prop.y_size || checked_y < 0) {
-            is_blocked = true;
-            break;
-        }
-        auto tetro = m_matrix_state_pair -> read_current().get_block(checked_x, checked_y);
-        if(tetro != TetrominoType::empty && tetro != TetrominoType::tetro_active){
-            is_blocked = true;
-            break;
-        }
-    }
-
-    if(is_blocked){
-        // the tetromino is bottoming out
-        m_is_bottom_out = true;
-    } else {
+    if(have_below_space(m_position,m_matrix_state_pair)) {
         // simply increase the x-axis by 1
         using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
         m_position.update_current(
@@ -138,10 +116,11 @@ void Tetromino::move_downwards() noexcept {
             }
         );
 
+    } else {
+        m_is_bottom_out = true;
     }
 }
 
-static bool have_below_space(AdjacentStates<TetrominoPosition>& position_pair, MatrixAdjacentStates* matrix_pair);
 
 void Tetromino::drop() noexcept {
     // move downwards until bottoming out
@@ -151,10 +130,11 @@ void Tetromino::drop() noexcept {
         m_position.update_current(
                 [&first_record](TetroPosPtr& previous, TetroPosPtr& current){
                     if(first_record) {
+                        // ensure the `previous` member is only recorded once
                         *previous = *current;
                         first_record = false;
                     }
-                    // no copy
+                    // no update
                 },
                 [](TetrominoPosition& position){
                     ++position.axis.x;
@@ -165,14 +145,17 @@ void Tetromino::drop() noexcept {
 }
 
 static bool have_below_space(AdjacentStates<TetrominoPosition>& position_pair, MatrixAdjacentStates* matrix_pair) {
+    // get the properties
     auto& prop = BlockMatrixProperties::instance();
+    // traverse coordinates of all blocks in the tetromino
     for(auto& block: position_pair.read_current().blocks){
         auto checked_x = position_pair.read_current().axis.x + block.x + 1;
         auto checked_y = position_pair.read_current().axis.y + block.y;
-        // bouond check: if the tetromino overflows
+        // bound check: if the tetromino overflows
         if(checked_x >= prop.x_size || checked_x < 0) {
             return false;
         }
+        // if the destination is blocked by existing tetromino
         auto tetro = matrix_pair -> read_current().get_block(checked_x, checked_y);
         if(tetro != TetrominoType::empty && tetro != TetrominoType::tetro_active){
             return false;
