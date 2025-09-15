@@ -20,9 +20,10 @@ public:
     using value_type = T;
 
     template<typename... Args>
-    explicit AdjacentStates(Args&&... args)
-            : m_current(std::make_unique<value_type>(std::forward<Args>(args)...)),
-              m_previous(std::make_unique<value_type>(std::forward<Args>(args)...)) {}
+    explicit AdjacentStates(Args&&... args){
+        m_current = std::make_unique<value_type>(std::forward<Args>(args)...);
+        m_previous = std::make_unique<value_type>(*m_current);
+    }
 
     const T& read_current() const;
 

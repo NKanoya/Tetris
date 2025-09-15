@@ -67,6 +67,7 @@ protected:
 
 public:
     BlockMatrix();
+    BlockMatrix(const BlockMatrix& oth);
 
     inline TetrominoType& get_block(size_t x, size_t y) const;
 };
@@ -80,7 +81,8 @@ protected:
     mutable std::vector<size_t> m_completed_rows;
     bool m_over_buffer;
 public:
-    RunningBlockMatrix();
+    explicit RunningBlockMatrix(std::shared_ptr<Tetromino> m_tetro);
+    RunningBlockMatrix(const RunningBlockMatrix& oth) = default;
 
     /**
      *

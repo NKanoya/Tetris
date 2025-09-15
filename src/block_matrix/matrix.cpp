@@ -22,18 +22,23 @@ const BlockMatrixProperties& BlockMatrixProperties::instance_read_only() noexcep
     return m_instance;
 }
 
-BlockMatrix::BlockMatrix():
+BlockMatrix::BlockMatrix() {
     // create the matrix array
-    m_matrix(new TetrominoType[(bmatrix_prop.x_size) * bmatrix_prop.y_size])
-{
+    size_t size = (bmatrix_prop.x_size) * bmatrix_prop.y_size;
+    m_matrix = std::make_unique<TetrominoType[]>(size);
     // initialize all the blocks
-    for(size_t i = 0; i < bmatrix_prop.x_size * bmatrix_prop.y_size; i++) {
-        m_matrix[i] = TetrominoType::empty;
-    }
+    std::fill(&(m_matrix[0]), &(m_matrix[0]) + size, TetrominoType::empty);
 }
 
-RunningBlockMatrix::RunningBlockMatrix():
+BlockMatrix::BlockMatrix(const BlockMatrix &oth) {
+    size_t size = (bmatrix_prop.x_size) * bmatrix_prop.y_size;
+    m_matrix = std::make_unique<TetrominoType[]>(size);
+    std::copy(oth.m_matrix.get(), oth.m_matrix.get() + size, m_matrix.get());
+}
+
+RunningBlockMatrix::RunningBlockMatrix(std::shared_ptr<Tetromino> tetro):
     BlockMatrix(),
+    m_tetro(tetro),
     m_tetro_type(m_tetro->get_type()),
     m_completed_rows_number(0),
     m_over_buffer(false),
