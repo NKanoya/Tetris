@@ -128,7 +128,7 @@ size_t MatrixAdjacentStates::reload_modifies_bitmask(BitMask& recording_bitmask)
     for(size_t i = 0; i < BlockMatrixProperties::instance_read_only().x_size; ++i) {
         for(size_t j = 0; j < BlockMatrixProperties::instance_read_only().y_size; ++j) {
             // check if the pixel changes
-            if(m_current -> get_block(i,j) != m_previous -> get_block(i,j) )
+            if((m_current -> get_block(i,j)) != (m_previous -> get_block(i,j)) )
                 // record in the recording_bitmask
                 recording_bitmask.mark_dirty(i,j);
         }

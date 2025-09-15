@@ -101,28 +101,33 @@ Tetromino::Tetromino(TetrominoType type, const Axis& axis, MatrixAdjacentStates 
 }
 
 void Tetromino::move_downwards() noexcept {
-    if(m_position.read_current().axis.x + 4 == bmatrix_prop.y_size){
-        // the tetromino is bottoming out
-        m_is_bottom_out = true;
-    }
-
     // bound check: check if the tetromino have space below
-    bool have_space_below = false;
+    bool is_blocked = false;
+    auto& prop = BlockMatrixProperties::instance();
     for(auto& block: m_position.read_current().blocks){
         auto checked_x = m_position.read_current().axis.x + block.x + 1;
-        auto checked_y = m_position.read_current().axis.y + block.x;
-        if(m_matrix_state_pair -> read_current().get_block(checked_x, checked_y) != TetrominoType::empty){
-            have_space_below = true;
+        auto checked_y = m_position.read_current().axis.y + block.y;
+        // bouond check: if the tetromino overflows
+        if(checked_x >= prop.x_size || checked_x < 0) {
+            is_blocked = true;
+            break;
+        }
+        if(checked_y > prop.y_size || checked_y < 0) {
+            is_blocked = true;
+            break;
+        }
+        auto tetro = m_matrix_state_pair -> read_current().get_block(checked_x, checked_y);
+        if(tetro != TetrominoType::empty && tetro != TetrominoType::tetro_active){
+            is_blocked = true;
             break;
         }
     }
 
-    if(have_space_below){
+    if(is_blocked){
         // the tetromino is bottoming out
         m_is_bottom_out = true;
     } else {
         // simply increase the x-axis by 1
-        std::cout << (m_position.read_current().axis.x) << std::endl;
         using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
         m_position.update_current(
             [](TetroPosPtr& previous, TetroPosPtr& current){
@@ -132,7 +137,7 @@ void Tetromino::move_downwards() noexcept {
                 ++position.axis.x;
             }
         );
-        std::cout << (m_position.read_current().axis.x) << std::endl;
+
     }
 }
 
@@ -144,17 +149,18 @@ void Tetromino::drop() noexcept {
 }
 
 void Tetromino::move_leftward() noexcept {
-    // bound check
-    if(m_position.read_current().axis.y == 0) {
-        return;         // fail to move
-    }
 
+    auto& prop = BlockMatrixProperties::instance();
     // check if there is space on the left
     bool have_space_on_left = true;
     // traverse all blocks
     for(auto& block: m_position.read_current().blocks){
         auto checked_x = m_position.read_current().axis.x + block.x;
         auto checked_y = m_position.read_current().axis.y + block.y - 1;
+        if(checked_y > prop.y_size || checked_y < 0) {
+            have_space_on_left = false;
+            break;
+        }
         if(m_matrix_state_pair -> read_current().get_block(checked_x, checked_y) != TetrominoType::empty){
             have_space_on_left = false;
             break;
@@ -178,8 +184,7 @@ void Tetromino::move_leftward() noexcept {
 
 void Tetromino::move_rightward() noexcept {
     // bound check
-    if(m_position.read_current().axis.y + 4 == bmatrix_prop.x_size)
-        return;         // fail to move
+    auto& prop = BlockMatrixProperties::instance();
 
     // check if there is space on the right
     bool have_space_on_right = true;
@@ -187,6 +192,10 @@ void Tetromino::move_rightward() noexcept {
     for(auto& block: m_position.read_current().blocks){
         auto checked_x = m_position.read_current().axis.x + block.x;
         auto checked_y = m_position.read_current().axis.y + block.y + 1;
+        if(checked_y > prop.y_size || checked_y < 0) {
+            have_space_on_right = false;
+            break;
+        }
         if(m_matrix_state_pair -> read_current().get_block(checked_x, checked_y) != TetrominoType::empty){
             have_space_on_right = false;
             break;
@@ -221,8 +230,8 @@ void Tetromino::rotate(bool clockwise) noexcept {
     }
     // traverse the block to check if any blocked
     for(auto& dest_axis: destination) {
-        // if the rotation is
-        if(m_matrix_state_pair -> read_current().get_block(dest_axis.x,dest_axis.y) != TetrominoType::empty) {
+        auto target = m_matrix_state_pair -> read_current().get_block(dest_axis.x,dest_axis.y);
+        if(target != TetrominoType::empty || (target != TetrominoType::tetro_active)) {
             is_rotation_blocked = true;
             break;
         }
@@ -312,6 +321,10 @@ bool Tetromino::check_space_for_wall_kick(const BlockShape &origin_dest, const A
     for(auto& axis: origin_dest) {
         auto checked_x = axis.x + wall_kick_disp.x;
         auto checked_y = axis.y + wall_kick_disp.y;
+        if(checked_x >= bmatrix_prop.x_size || checked_x < 0)
+            return false;
+        if(checked_y >= bmatrix_prop.y_size || checked_y < 0)
+            return false;
 
         if(m_matrix_state_pair -> read_current().get_block(checked_x,checked_y) != TetrominoType::empty) {
             return false;

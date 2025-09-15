@@ -27,7 +27,8 @@ enum class TetrominoType: unsigned char {
     tetro_J,
     tetro_L,
     tetro_S,
-    tetro_Z
+    tetro_Z,
+    tetro_active
 };
 
 struct TetrominoPosition {

@@ -44,7 +44,6 @@ TetrominoesPair::TetrominoesPair(Tetromino&& tetro_current, Tetromino&& tetro_up
 }
 
 Tetromino& TetrominoesPair::get_current() noexcept {
-    std::cout << &(**m_current_tetro) << std::endl;
     return **m_current_tetro;
 }
 
