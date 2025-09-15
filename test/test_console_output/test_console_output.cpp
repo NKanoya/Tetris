@@ -9,15 +9,24 @@
 
 
 namespace TetroTest {
+
+    void operate(Operation op){
+        static auto& instance = MatrixStateManager::instance();
+        auto data = instance.process_operation(op);
+        ConsoleOutput::ConsolePrinter printer;
+        printer.output(data);
+        std::cout << std::endl;
+    }
+
     void test_console_output() {
-        auto& instance = MatrixStateManager::instance();
-
-        for(int i = 0; i < 10; ++i) {
-            auto data = instance.process_operation(Operation::Down);
-            ConsoleOutput::ConsolePrinter printer;
-            printer.output(data);
-            std::cout << std::endl;
-        }
-
+        operate(Operation::Down);
+        operate(Operation::Left);
+        operate(Operation::Right);
+        operate(Operation::Right);
+        operate(Operation::RotateCW);
+        operate(Operation::RotateCW);
+        operate(Operation::Down);
+        operate(Operation::RotateCCW);
+        operate(Operation::Drop);
     }
 }

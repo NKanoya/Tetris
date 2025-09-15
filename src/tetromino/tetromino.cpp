@@ -161,7 +161,8 @@ void Tetromino::move_leftward() noexcept {
             have_space_on_left = false;
             break;
         }
-        if(m_matrix_state_pair -> read_current().get_block(checked_x, checked_y) != TetrominoType::empty){
+        auto target = m_matrix_state_pair -> read_current().get_block(checked_x, checked_y);
+        if((target != TetrominoType::tetro_active) && (target != TetrominoType::empty)){
             have_space_on_left = false;
             break;
         }
@@ -196,7 +197,8 @@ void Tetromino::move_rightward() noexcept {
             have_space_on_right = false;
             break;
         }
-        if(m_matrix_state_pair -> read_current().get_block(checked_x, checked_y) != TetrominoType::empty){
+        auto target = m_matrix_state_pair -> read_current().get_block(checked_x, checked_y);
+        if((target != TetrominoType::tetro_active) && (target != TetrominoType::empty)){
             have_space_on_right = false;
             break;
         }
@@ -231,7 +233,7 @@ void Tetromino::rotate(bool clockwise) noexcept {
     // traverse the block to check if any blocked
     for(auto& dest_axis: destination) {
         auto target = m_matrix_state_pair -> read_current().get_block(dest_axis.x,dest_axis.y);
-        if(target != TetrominoType::empty || (target != TetrominoType::tetro_active)) {
+        if((target != TetrominoType::tetro_active) && (target != TetrominoType::empty)) {
             is_rotation_blocked = true;
             break;
         }
