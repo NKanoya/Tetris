@@ -1,4 +1,4 @@
-#include "console_output.hpp"
+#include "console_player.hpp"
 
 
 /**
@@ -7,7 +7,7 @@
  * <p>declared at @c matrix_state_manager.hpp
  */
 
-namespace ConsoleOutput {
+namespace ConsolePlayer {
     static const char * const block_figure_ = "█▉";
 
     void ConsolePrinter::output_matrix(const RunningBlockMatrix& matrix) const noexcept {

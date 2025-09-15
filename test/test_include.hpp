@@ -11,7 +11,7 @@ namespace TetroTest {
     void test_double_buffer();
     void test_bit_mask();
     void test_tetromino_tools();
-    void test_console_output();
+    void test_console_player();
 }
 
 

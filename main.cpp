@@ -1,12 +1,12 @@
 #include <iostream>
 #include "test/test_include.hpp"
 #include "matrix_state_manager.hpp"
-#include "plugins/console_output/console_output.hpp"
+#include "plugins/console_player/console_player.hpp"
 #include <array>
 
 int main() {
     try {
-        TetroTest::test_console_output();
+        TetroTest::test_console_player();
     } catch (std::exception& e) {
         std::cerr << e.what();
     }

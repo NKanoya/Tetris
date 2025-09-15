@@ -2,12 +2,12 @@
 // Created by pilip on 2025/9/13.
 //
 
-#ifndef TETRIS_CONSOLE_OUTPUT_HPP
-#define TETRIS_CONSOLE_OUTPUT_HPP
+#ifndef TETRIS_console_player_HPP
+#define TETRIS_console_player_HPP
 
 #include "./../include/matrix_state_manager.hpp"
 
-namespace ConsoleOutput {
+namespace ConsolePlayer {
 
     class ConsolePrinter {
     public:
@@ -25,8 +25,11 @@ namespace ConsoleOutput {
         const size_t* prop_buffer_size_ptr;
     };
 
+    class ConsoleInput {
+
+    };
 
 
 }
 
-#endif //TETRIS_CONSOLE_OUTPUT_HPP
+#endif //TETRIS_console_player_HPP

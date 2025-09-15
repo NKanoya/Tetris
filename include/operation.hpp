@@ -6,6 +6,7 @@
 #define TETRIS_OPERATION_HPP
 
 enum class Operation {
+    None,
     Left,
     Right,
     Down,

@@ -1,11 +1,11 @@
 ///
-/// @file @c test/matrix/test_console_output.cpp
+/// @file @c test/matrix/test_console_player.cpp
 ///
 
 #include "../test_include.hpp"
 #include "../../include/adjacent_states.hpp"
 #include "../../include/matrix_state_manager.hpp"
-#include "../../plugins/console_output/console_output.hpp"
+#include "../../plugins/console_player/console_player.hpp"
 
 
 namespace TetroTest {
@@ -13,12 +13,12 @@ namespace TetroTest {
     void operate(Operation op){
         static auto& instance = MatrixStateManager::instance();
         auto data = instance.process_operation(op);
-        ConsoleOutput::ConsolePrinter printer;
+        ConsolePlayer::ConsolePrinter printer;
         printer.output(data);
         std::cout << std::endl;
     }
 
-    void test_console_output() {
+    void test_console_player() {
         operate(Operation::Down);
         operate(Operation::Left);
         operate(Operation::Right);

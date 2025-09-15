@@ -1,18 +1,18 @@
 add_library(
-        test_console_output
-        test_console_output.cpp
+        test_console_player
+        test_console_player.cpp
         ../../src/matrix_state_manager/matrix_state_manager.cpp
 )
 
 target_include_directories(
-        test_console_output
-        PUBLIC ../../plugins/console_output
+        test_console_player
+        PUBLIC ../../plugins/console_player
         PUBLIC ../../test
         PUBLIC ../../include
 )
 
 target_link_libraries(
-        test_console_output
+        test_console_player
 
         PRIVATE block_matrix
         PRIVATE tetromino
@@ -24,7 +24,7 @@ target_link_libraries(
         PRIVATE operation
         PRIVATE matrix_state_manager
 
-        PRIVATE console_output
+        PRIVATE console_player
 
 
 )
