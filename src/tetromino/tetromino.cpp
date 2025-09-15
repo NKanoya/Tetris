@@ -130,9 +130,9 @@ void Tetromino::move_downwards() noexcept {
         // simply increase the x-axis by 1
         using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
         m_position.update_current(
-            [](TetroPosPtr& previous, TetroPosPtr& current){
-                previous -> axis = current -> axis;
-            },
+                [](TetroPosPtr& previous, TetroPosPtr& current){
+                    *previous = *current;
+                },
             [](TetrominoPosition& position){
                 ++position.axis.x;
             }
@@ -173,7 +173,7 @@ void Tetromino::move_leftward() noexcept {
         // decrease the y-axis by 1
         m_position.update_current(
                 [](TetroPosPtr& previous, TetroPosPtr& current){
-                    previous -> axis = current -> axis;
+                    *previous = *current;
                 },
                 [](TetrominoPosition& position){
                     --position.axis.y;
@@ -209,7 +209,7 @@ void Tetromino::move_rightward() noexcept {
         using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
         m_position.update_current(
                 [](TetroPosPtr& previous, TetroPosPtr& current){
-                    previous -> axis = current -> axis;
+                    *previous = *current;
                 },
                 [](TetrominoPosition& position){
                     ++position.axis.y;
