@@ -34,6 +34,9 @@ public:
     template<typename Func>
     const T& update_current(Func&& write_func);
 
+    template<typename CopyFunc, typename WriteFunc>
+    const T& update_current(CopyFunc copy_func, WriteFunc&& write_func);
+
     AdjacentStates(AdjacentStates&& oth) noexcept:
         m_current(std::move(oth.m_current)),
         m_previous(std::move(oth.m_previous))
@@ -70,7 +73,16 @@ template<typename T>
 template<typename Func>
 const T& AdjacentStates<T>::update_current(Func&& write_func) {
     std::unique_lock lock(mutex);
-    m_current.swap(m_previous);
+    *m_previous = *m_previous;
+    write_func(*m_current);
+    return *m_current;
+}
+
+template<typename T>
+template<typename CopyFunc, typename WriteFunc>
+const T &AdjacentStates<T>::update_current(CopyFunc copy_func, WriteFunc &&write_func) {
+    std::unique_lock lock(mutex);
+    copy_func(m_previous, m_current);
     write_func(*m_current);
     return *m_current;
 }

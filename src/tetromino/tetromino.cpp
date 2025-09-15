@@ -122,9 +122,17 @@ void Tetromino::move_downwards() noexcept {
         m_is_bottom_out = true;
     } else {
         // simply increase the x-axis by 1
-        m_position.update_current([](TetrominoPosition& position){
-            ++position.axis.x;
-        });
+        std::cout << (m_position.read_current().axis.x) << std::endl;
+        using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
+        m_position.update_current(
+            [](TetroPosPtr& previous, TetroPosPtr& current){
+                previous -> axis = current -> axis;
+            },
+            [](TetrominoPosition& position){
+                ++position.axis.x;
+            }
+        );
+        std::cout << (m_position.read_current().axis.x) << std::endl;
     }
 }
 
@@ -154,10 +162,16 @@ void Tetromino::move_leftward() noexcept {
     }
 
     if(have_space_on_left){
+        using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
         // decrease the y-axis by 1
-        m_position.update_current([](TetrominoPosition& position){
-            --position.axis.y;
-        });
+        m_position.update_current(
+                [](TetroPosPtr& previous, TetroPosPtr& current){
+                    previous -> axis = current -> axis;
+                },
+                [](TetrominoPosition& position){
+                    --position.axis.y;
+                }
+        );
     }
     // otherwise, fail to move
 }
@@ -181,10 +195,15 @@ void Tetromino::move_rightward() noexcept {
 
     if(have_space_on_right){
         // increase the y-axis by 1
-
-        m_position.update_current([](TetrominoPosition& position){
-            ++position.axis.y;
-        });
+        using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
+        m_position.update_current(
+                [](TetroPosPtr& previous, TetroPosPtr& current){
+                    previous -> axis = current -> axis;
+                },
+                [](TetrominoPosition& position){
+                    ++position.axis.y;
+                }
+        );
     }
     // otherwise, fail to move
 }
@@ -277,9 +296,16 @@ void Tetromino::change_rotate_state(RotateState &rotate_state, bool clockwise) n
 
 void Tetromino::employ_rotation(const BlockShape &destination, bool clockwise) noexcept {
     change_rotate_state(m_rotate_state, clockwise);
-    m_position.update_current([&destination](TetrominoPosition& position){
-        position.blocks = destination;
-    });
+
+    using TetroPosPtr = std::unique_ptr<TetrominoPosition>;
+    m_position.update_current(
+            [](TetroPosPtr& previous, TetroPosPtr& current){
+                *previous = *current;
+            },
+            [&destination](TetrominoPosition& position){
+                position.blocks = destination;
+            }
+    );
 }
 
 bool Tetromino::check_space_for_wall_kick(const BlockShape &origin_dest, const Axis& wall_kick_disp) const noexcept {

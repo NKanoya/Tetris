@@ -24,6 +24,7 @@ public:
      * @param tetro_upcoming ( @c Tetromino&& ) - Upcoming tetromino to be moved into the pair
      */
     TetrominoesPair(Tetromino&& tetro_current, Tetromino&& tetro_upcoming);
+    TetrominoesPair(Tetromino&& tetro);
 
     /**
      * @brief get a modifiable non-constant reference of current tetromino
