@@ -30,9 +30,9 @@ namespace TetroTest {
         operate(Operation::Drop);
     }
 
-    void test_console_input() {
-        ConsolePlayer::ConsoleScanner sc;
-        auto op = sc.input();
-        std::cout << static_cast<int>(op) << std::endl;
-    }
+//    void test_console_input() {
+//        ConsolePlayer::ConsoleScanner sc;
+//        auto op = sc.input();
+//        std::cout << static_cast<int>(op) << std::endl;
+//    }
 }

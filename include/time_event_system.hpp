@@ -9,7 +9,23 @@
 #include <functional>
 #include <thread>
 #include "operation.hpp"
+#include <optional>
+#include <queue>
 #include "matrix_state_manager.hpp"
+
+/**
+ * @brief a shared queue of operation between command input thread and render operation
+ */
+class OperationQueue {
+    std::queue<Operation> m_op_queue;
+    std::mutex m_mtx;
+public:
+    OperationQueue();
+
+    void push(Operation operation);
+
+    std::optional<Operation> try_pop();
+};
 
 template <size_t frame>
 class TickCircle {
@@ -26,7 +42,7 @@ private:
 
     // callback functions
     using ProcessData = MatrixStateManager::ProcessData;
-    using CommandFunc = std::function<Operation()>;
+    using CommandFunc = std::function<OperationQueue&()>;
     using ProcessFunc = std::function<ProcessData(Operation)>;
     using RenderFunc = std::function<void(const ProcessData&)>;
     CommandFunc m_command_func;
@@ -69,7 +85,14 @@ void TickCircle<frame>::game_loop() {
             operation = Operation::Down;
             m_frame_count = 0;
         } else {
-            operation = m_command_func();
+            // recieve the queue
+            auto& queue = m_command_func();
+            auto opt = queue.try_pop();
+            if(opt.has_value()) {
+                operation = opt.value();
+            } else {
+                operation = Operation::None;
+            }
         }
         auto data = m_process_func(operation);
         m_render_func(data);
@@ -105,13 +128,11 @@ void TickCircle<frame>::wait_for_next_frame() {
             )
     );
 
-    // 如果持续超时，适当放宽目标
     if (actual_duration > m_target_duration * 1.1) { // 超时10%
         m_target_duration = FrameDuration(
                 static_cast<int64_t>(m_target_duration.count() * 1.05) // 放宽5%
         );
     }
-        // 如果运行很快，可以尝试提高要求
     else if (actual_duration < m_target_duration * 0.9) { // 提前10%
         m_target_duration = FrameDuration(
                 static_cast<int64_t>(m_target_duration.count() * 0.95) // 收紧5%

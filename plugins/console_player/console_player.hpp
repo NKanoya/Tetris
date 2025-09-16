@@ -5,7 +5,9 @@
 #ifndef TETRIS_console_player_HPP
 #define TETRIS_console_player_HPP
 
-#include "./../include/matrix_state_manager.hpp"
+#include "../../include/matrix_state_manager.hpp"
+#include "../../include/time_event_system.hpp"
+#include <thread>                 // for std::thread and std::mutex
 
 namespace ConsolePlayer {
 
@@ -27,7 +29,20 @@ namespace ConsolePlayer {
 
     class ConsoleScanner {
     public:
-        Operation input();
+        OperationQueue shared_operation_queue;
+    private:
+        std::atomic<bool> m_scan_over;
+        std::thread m_scan_thread;
+    public:
+
+        ConsoleScanner();
+        ~ConsoleScanner();
+
+        void receive_command();
+
+        inline OperationQueue& get_operation_queue(){
+            return shared_operation_queue;
+        };
     };
 
 

@@ -51,8 +51,9 @@ namespace ConsolePlayer {
     //
     // ConsoleScanner
     //
-    Operation ConsoleScanner::input() {
+    void ConsoleScanner::receive_command() {
         char c;
+        // get the command
 #ifdef _WIN32
         c = _getch();
 #else
@@ -72,24 +73,43 @@ namespace ConsolePlayer {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 #endif
 
+        // call to correlated command
         switch(c) {
             case 'A':
             case 'a':
-                return Operation::Left;
+                shared_operation_queue.push(Operation::Left);
+                return;
             case 'D':
             case 'd':
-                return Operation::Right;
+                shared_operation_queue.push(Operation::Right);
             case 'E':
             case 'e':
-                return Operation::RotateCCW;
+                shared_operation_queue.push(Operation::RotateCCW);
             case 'Q':
             case 'q':
-                return Operation::RotateCCW;
+                shared_operation_queue.push(Operation::RotateCCW);
             case 'S':
             case 's':
-                return Operation::Drop;
-            default: return Operation::None;
+                shared_operation_queue.push(Operation::Drop);
+            default: return;
         }
 
     }
+
+    ConsoleScanner::ConsoleScanner() :
+        shared_operation_queue(),
+        m_scan_over(false),
+        m_scan_thread([this](){
+            while(!m_scan_over) {
+                receive_command();
+            }
+    }) {}
+
+    ConsoleScanner::~ConsoleScanner() {
+        m_scan_thread.join();
+    }
+
+
+
+
 }

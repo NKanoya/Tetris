@@ -10,8 +10,8 @@ int main() {
     ConsolePlayer::ConsolePrinter pr;
     MatrixStateManager& manager = MatrixStateManager::instance();
 
-    auto command_func = [&sc]() -> Operation {
-        return sc.input();
+    auto command_func = [&sc]() -> OperationQueue& {
+        return sc.get_operation_queue();
     };
 
     auto process_func = [&manager](Operation op) -> MatrixStateManager::ProcessData {
@@ -22,7 +22,7 @@ int main() {
         pr.output(data);
     };
 
-    TickCircle<30> circle(std::chrono::milliseconds(1000),
+    TickCircle<30> circle(std::chrono::milliseconds(6000),
                           command_func,
                           process_func,
                           render_func);
