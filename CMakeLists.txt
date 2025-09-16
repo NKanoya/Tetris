@@ -11,6 +11,7 @@ add_subdirectory(src/tetromino)
 add_subdirectory(src/bit_mask)
 add_subdirectory(src/tetromino_tools)
 add_subdirectory(src/operation)
+add_subdirectory(src/time_event_system)
 
 # plugins
 add_subdirectory(plugins/console_player)
@@ -37,6 +38,7 @@ target_link_libraries(Tetris
         PRIVATE bit_mask
         PRIVATE tetromino_tools
         PRIVATE operation
+        PRIVATE time_event_system
 
         # plugins
         PRIVATE console_player
