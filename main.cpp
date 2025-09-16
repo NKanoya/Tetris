@@ -22,7 +22,7 @@ int main() {
         pr.output(data);
     };
 
-    TickCircle<30> circle(std::chrono::milliseconds(6000),
+    TickCircle<15> circle(std::chrono::milliseconds(1000),
                           command_func,
                           process_func,
                           render_func);

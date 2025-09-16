@@ -82,15 +82,19 @@ namespace ConsolePlayer {
             case 'D':
             case 'd':
                 shared_operation_queue.push(Operation::Right);
+                return;
             case 'E':
             case 'e':
                 shared_operation_queue.push(Operation::RotateCCW);
+                return;
             case 'Q':
             case 'q':
                 shared_operation_queue.push(Operation::RotateCCW);
+                return;
             case 'S':
             case 's':
                 shared_operation_queue.push(Operation::Drop);
+                return;
             default: return;
         }
 
