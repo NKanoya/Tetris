@@ -173,7 +173,7 @@ void Tetromino::move_leftward() noexcept {
     for(auto& block: m_position.read_current().blocks){
         auto checked_x = m_position.read_current().axis.x + block.x;
         auto checked_y = m_position.read_current().axis.y + block.y - 1;
-        if(checked_y > prop.y_size || checked_y < 0) {
+        if(checked_y >= prop.y_size || checked_y < 0) {
             have_space_on_left = false;
             break;
         }
@@ -209,7 +209,7 @@ void Tetromino::move_rightward() noexcept {
     for(auto& block: m_position.read_current().blocks){
         auto checked_x = m_position.read_current().axis.x + block.x;
         auto checked_y = m_position.read_current().axis.y + block.y + 1;
-        if(checked_y > prop.y_size || checked_y < 0) {
+        if(checked_y >= prop.y_size || checked_y < 0) {
             have_space_on_right = false;
             break;
         }
