@@ -11,7 +11,7 @@ BlockMatrixProperties BlockMatrixProperties::m_instance;
 BlockMatrixProperties::BlockMatrixProperties()  :
     x_size(22),
     y_size(10),
-    x_buffer_size(0),
+    x_buffer_size(4),
     check_failed_signal(114514) {}
 
 BlockMatrixProperties& BlockMatrixProperties::instance() noexcept {

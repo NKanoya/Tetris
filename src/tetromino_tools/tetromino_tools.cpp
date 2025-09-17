@@ -25,14 +25,14 @@ TetrominoType TetrominoGenerator::get_random_type() noexcept {
     return static_cast<TetrominoType>(random_num + 1);
 }
 
-auto x_center = BlockMatrixProperties::instance_read_only().x_size / 2 + 2;
-auto y_center = BlockMatrixProperties::instance_read_only().x_size / 2 + 2;
+auto x_begin = 2;
+auto y_begin = BlockMatrixProperties::instance_read_only().y_size / 2 + 3;
 
-const Axis axis = {static_cast<ptrdiff_t>(x_center),static_cast<ptrdiff_t>(y_center)};
+const Axis axis = {static_cast<ptrdiff_t>(x_begin),static_cast<ptrdiff_t>(y_begin)};
 
 Tetromino TetrominoGenerator::new_tetromino(MatrixAdjacentStates * matrix_pair) noexcept {
     auto type = TetrominoGenerator::get_random_type();
-    return Tetromino(type,{0,0},matrix_pair);
+    return {type, axis, matrix_pair};
 }
 
 TetrominoesPair::TetrominoesPair(Tetromino&& tetro_current, Tetromino&& tetro_upcoming):
