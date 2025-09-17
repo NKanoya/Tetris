@@ -208,7 +208,7 @@ protected:
      * @param wall_kick_disp ( <b>Axis</b> ): the wall-kick displacement
      * @return ( @c bool ): if the wall-kick operation have enough space
      */
-    bool check_space_for_wall_kick(const BlockShape& origin_dest, const Axis& wall_kick_disp) const noexcept;
+    bool check_space_for_wall_kick(const Axis& abs_axis, const BlockShape& origin_dest, const Axis& wall_kick_disp) const noexcept;
 
     void record_position();
 };

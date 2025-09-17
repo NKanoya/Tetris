@@ -247,7 +247,17 @@ void Tetromino::rotate(bool clockwise) noexcept {
         eval_rotate_dest_normal(m_position.read_current().blocks, destination, clockwise);
     }
     // traverse the block to check if any blocked
-    for(auto& dest_axis: destination) {
+    for(auto dest_axis: destination) {
+        // calculate the absolute axis (of the whole matrix) of the destination
+        auto abs_axis = m_position.read_current().axis;
+        dest_axis.x += abs_axis.x;
+        dest_axis.y += abs_axis.y;
+
+        if(dest_axis.x >= bmatrix_prop.x_size || dest_axis.x < 0 ||
+           dest_axis.y >= bmatrix_prop.y_size || dest_axis.y < 0) {
+            is_rotation_blocked = true;
+            break;
+        }
         auto target = m_matrix_state_pair -> read_current().get_block(dest_axis.x,dest_axis.y);
         if((target != TetrominoType::tetro_active) && (target != TetrominoType::empty)) {
             is_rotation_blocked = true;
@@ -267,14 +277,17 @@ void Tetromino::rotate(bool clockwise) noexcept {
         auto& attempt_list = wall_kick_tetro_I(m_rotate_state,clockwise);
         // traverse the attempt list
         for(auto& displacement_axis: attempt_list) {
+            // calculate the absolute axis (of the whole matrix) of the destination
+            auto& abs_axis = m_position.read_current().axis;
             // check all
-            if(check_space_for_wall_kick(destination, displacement_axis)) {
+            if(check_space_for_wall_kick(abs_axis,destination, displacement_axis)) {
                 // add wall-kick displacement to the destination
                 for(auto& axis: destination) {
                     axis_displace(axis, displacement_axis);
                 }
                 // employ the rotation
                 employ_rotation(destination);
+                break;
             }
         }
 
@@ -287,13 +300,15 @@ void Tetromino::rotate(bool clockwise) noexcept {
         // traverse the attempt list
         for(auto& displacement_axis: attempt_list) {
             // check all
-            if(check_space_for_wall_kick(destination, displacement_axis)) {
+            auto& abs_axis = m_position.read_current().axis;
+            if(check_space_for_wall_kick(abs_axis, destination, displacement_axis)) {
                 // add wall-kick displacement to the destination
                 for(auto& axis: destination) {
                     axis_displace(axis, displacement_axis);
                 }
                 // employ the rotation
                 employ_rotation(destination);
+                break;
             }
         }
 
@@ -335,16 +350,18 @@ void Tetromino::employ_rotation(const BlockShape &destination, bool clockwise) n
     );
 }
 
-bool Tetromino::check_space_for_wall_kick(const BlockShape &origin_dest, const Axis& wall_kick_disp) const noexcept {
+bool Tetromino::check_space_for_wall_kick(const Axis& abs_axis, const BlockShape &origin_dest, const Axis& wall_kick_disp) const noexcept {
     for(auto& axis: origin_dest) {
-        auto checked_x = axis.x + wall_kick_disp.x;
-        auto checked_y = axis.y + wall_kick_disp.y;
+        auto checked_x = abs_axis.x + axis.x + wall_kick_disp.x;
+        auto checked_y = abs_axis.y + axis.y + wall_kick_disp.y;
         if(checked_x >= bmatrix_prop.x_size || checked_x < 0)
             return false;
         if(checked_y >= bmatrix_prop.y_size || checked_y < 0)
             return false;
 
-        if(m_matrix_state_pair -> read_current().get_block(checked_x,checked_y) != TetrominoType::empty) {
+        auto checked_block = m_matrix_state_pair -> read_current().get_block(checked_x,checked_y);
+        if(checked_block != TetrominoType::empty
+         && checked_block != TetrominoType::tetro_active) {
             return false;
         }
     }
