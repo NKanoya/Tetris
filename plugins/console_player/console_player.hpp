@@ -20,7 +20,6 @@ public:
 
     inline void add_score(int score) {
         m_score += score;
-        std::cout << "jdjd" << score << m_score << std::endl;
     }
 
 };
