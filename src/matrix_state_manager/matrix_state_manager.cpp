@@ -108,11 +108,11 @@ MatrixStateManager::ProcessData MatrixStateManager::process_operation(Operation 
 
         // generate a new tetromino
         new_tetromino();
-        size_t cleared_rows = update_modifies_bitmask();
-        return {m_modifies_bitmask, get_current_matrix(), cleared_rows,false};
+        update_modifies_bitmask();
+        return {m_modifies_bitmask, get_current_matrix(), return_value, false};
     }
 
-    return {get_modifies_bitmask(), get_current_matrix(), 0,false};
+    return {get_modifies_bitmask(), get_current_matrix(), return_value,false};
 }
 
 

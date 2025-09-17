@@ -21,6 +21,8 @@ namespace ConsolePlayer {
         // clear previous output
         std::cout << "\033[2J\033[H";
 
+        std::cout << "Score: " << m_score.get_score() << "\n";
+
         // traverse all blocks
         for(size_t x = *prop_buffer_size_ptr; x < *prop_x_axis_ptr; ++x) {
             for(size_t y = 0; y < *prop_y_axis_ptr; ++y) {
@@ -40,11 +42,16 @@ namespace ConsolePlayer {
     ConsolePrinter::ConsolePrinter() :
             prop_x_axis_ptr(&(BlockMatrixProperties::instance_read_only().x_size)),
             prop_y_axis_ptr(&(BlockMatrixProperties::instance_read_only().y_size)),
-            prop_buffer_size_ptr(&(BlockMatrixProperties::instance_read_only().x_buffer_size)) {
+            prop_buffer_size_ptr(&(BlockMatrixProperties::instance_read_only().x_buffer_size)),
+            m_score() {
 
     }
 
     void ConsolePrinter::output(const ConsolePrinter::ProcessData &data) const noexcept {
+        if(data.cleared_rows){
+            m_score.add_score(data.cleared_rows);
+        }
+
         output_matrix(data.matrix);
     }
 

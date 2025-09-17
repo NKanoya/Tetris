@@ -55,8 +55,6 @@ size_t RunningBlockMatrix::track_tetro() noexcept {
             if(block_previous == TetrominoType::tetro_active) {
                 block_previous = TetrominoType::empty;
             }
-
-
         } catch (const std::exception& e) {
             std::cerr << e.what();
         }
@@ -97,7 +95,8 @@ size_t RunningBlockMatrix::track_tetro() noexcept {
         // check if there is completed rows
         check_completed_rows(axis, shape);
         if(m_completed_rows_number != 0) {
-            auto completed_lines = clear_completed_rows();
+            auto completed_lines = m_completed_rows_number;
+            clear_completed_rows();
             return completed_lines;
         }
 

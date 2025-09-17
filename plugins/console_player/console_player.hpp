@@ -9,6 +9,22 @@
 #include "../../include/time_event_system.hpp"
 #include <thread>                 // for std::thread and std::mutex
 
+class Score {
+    int m_score;
+public:
+    Score() : m_score(0) {}
+
+    inline int get_score() const {
+        return m_score;
+    }
+
+    inline void add_score(int score) {
+        m_score += score;
+        std::cout << "jdjd" << score << m_score << std::endl;
+    }
+
+};
+
 namespace ConsolePlayer {
 
     class ConsolePrinter {
@@ -20,6 +36,8 @@ namespace ConsolePlayer {
         void output_matrix(const RunningBlockMatrix& matrix) const noexcept;
 
         ConsolePrinter();
+
+        mutable Score m_score;
 
     private:
         const size_t* prop_x_axis_ptr;
