@@ -23,8 +23,15 @@ namespace ConsolePlayer {
 
         std::cout << "Score: " << m_score.get_score() << "\n";
 
+        std::cout << "┌─";
+        for(size_t y = 0; y < *prop_y_axis_ptr; ++y) {
+            std::cout << "──";
+        }
+        std::cout << "─┐\n";
+
         // traverse all blocks
         for(size_t x = *prop_buffer_size_ptr; x < *prop_x_axis_ptr; ++x) {
+            std::cout << "│ ";
             for(size_t y = 0; y < *prop_y_axis_ptr; ++y) {
                 // check the type of the block
                 if( matrix.get_block(x,y) != TetrominoType::empty) {
@@ -34,8 +41,14 @@ namespace ConsolePlayer {
                 }
             }
             // enter the row
-            std::cout << '\n';
+            std::cout << " │\n";
         }
+        std::cout << "└─";
+        for(size_t y = 0; y < *prop_y_axis_ptr; ++y) {
+            std::cout << "──";
+        }
+        std::cout << "─┘\n";
+        std::cout << std::endl << std::endl;
 
     }
 
