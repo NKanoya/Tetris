@@ -1,0 +1,25 @@
+.score-container {
+    padding:8px 20px;
+}
+
+#score {
+    font-family: 'Pixel Digivolve', sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 50px;
+    color: #f0f0f0;
+}
+
+#score-box {
+    margin-bottom: 50px;
+}
+
+#score-title {
+    font-family: "Pixel Digivolve", sans-serif;
+    display: flex;
+    justify-content: center;
+    font-size:40px;
+    margin-bottom: 5px;
+    color: #f0f0f0;
+    font-weight:bolder;
+}

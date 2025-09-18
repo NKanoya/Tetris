@@ -1,0 +1,17 @@
+#tetris-matrix {
+    display: grid;
+    padding:0;
+    grid-template-columns: repeat(10, 25px);
+    grid-template-rows: repeat(18, 25px);
+    gap: 3px;
+    width: calc(10 * 25px + 9 * 3px);
+    height: calc(18 * 25px + 17 * 3px);
+}
+
+.tetris-matrix-block {
+    background: #adbdbd;
+}
+
+.tetris-matrix-filled {
+    background: #f0f0f0;
+}
