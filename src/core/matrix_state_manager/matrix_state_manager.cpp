@@ -2,8 +2,8 @@
 // Created by pilip on 2025/9/5.
 //
 
-#include "../../include/matrix.hpp"
-#include "../../include/matrix_state_manager.hpp"
+#include "../../../include/matrix.hpp"
+#include "../../../include/matrix_state_manager.hpp"
 #include <mutex>
 
 std::mutex MatrixStateManager::m_mtx{};

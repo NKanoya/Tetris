@@ -3,7 +3,7 @@ add_library(tetromino
 )
 
 target_include_directories(tetromino
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
 
 target_link_libraries(tetromino

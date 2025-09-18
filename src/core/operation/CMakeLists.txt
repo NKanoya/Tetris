@@ -3,7 +3,7 @@ add_library(operation
 )
 
 target_include_directories(operation
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
 
 #target_link_libraries(operation

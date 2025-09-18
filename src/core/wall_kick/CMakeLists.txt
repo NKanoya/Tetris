@@ -3,7 +3,7 @@ add_library(wall_kick
 )
 
 target_include_directories(wall_kick
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
 
 target_link_libraries(wall_kick

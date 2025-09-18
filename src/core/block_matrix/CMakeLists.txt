@@ -3,7 +3,7 @@ add_library(block_matrix
 )
 
 target_include_directories(block_matrix
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
 
 target_link_libraries(block_matrix

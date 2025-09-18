@@ -1,7 +1,7 @@
 add_library(
         test_console_player
         test_console_player.cpp
-        ../../src/matrix_state_manager/matrix_state_manager.cpp
+        ../../src/core/matrix_state_manager/matrix_state_manager.cpp
 )
 
 target_include_directories(

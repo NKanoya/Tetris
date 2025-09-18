@@ -3,7 +3,7 @@ add_library(matrix_state_manager
 )
 
 target_include_directories(matrix_state_manager
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
 
 target_link_libraries(matrix_state_manager

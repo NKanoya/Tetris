@@ -3,5 +3,5 @@ add_library(rotate
 )
 
 target_include_directories(rotate
-        PUBLIC ../../include
+        PUBLIC ../../../include
 )
