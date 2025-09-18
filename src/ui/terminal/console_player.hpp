@@ -5,8 +5,8 @@
 #ifndef TETRIS_console_player_HPP
 #define TETRIS_console_player_HPP
 
-#include "../../include/matrix_state_manager.hpp"
-#include "../../include/time_event_system.hpp"
+#include "../../../include/matrix_state_manager.hpp"
+#include "../../../include/time_event_system.hpp"
 #include <thread>                 // for std::thread and std::mutex
 
 class Score {

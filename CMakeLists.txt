@@ -3,6 +3,7 @@ project(Tetris)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# core modules
 add_subdirectory(src/core/matrix_state_manager)
 add_subdirectory(src/core/block_matrix)
 add_subdirectory(src/core/rotate)
@@ -13,8 +14,8 @@ add_subdirectory(src/core/tetromino_tools)
 add_subdirectory(src/core/operation)
 add_subdirectory(src/core/time_event_system)
 
-# plugins
-add_subdirectory(plugins/console_player)
+# ui modules
+add_subdirectory(src/ui/terminal)
 
 # test instance
 # add_subdirectory(test/test_block_matrix)

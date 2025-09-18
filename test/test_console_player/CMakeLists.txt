@@ -6,7 +6,7 @@ add_library(
 
 target_include_directories(
         test_console_player
-        PUBLIC ../../plugins/console_player
+        PUBLIC ../../src/ui/console_player
         PUBLIC ../../test
         PUBLIC ../../include
 )

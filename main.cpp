@@ -1,7 +1,7 @@
 #include <iostream>
 #include "test/test_include.hpp"
 #include "include/matrix_state_manager.hpp"
-#include "plugins/console_player/console_player.hpp"
+#include "src/ui/terminal/console_player.hpp"
 #include "include/time_event_system.hpp"
 #include <chrono>
 

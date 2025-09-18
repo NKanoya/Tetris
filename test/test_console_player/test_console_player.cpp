@@ -5,7 +5,7 @@
 #include "../test_include.hpp"
 #include "../../include/adjacent_states.hpp"
 #include "../../include/matrix_state_manager.hpp"
-#include "../../plugins/console_player/console_player.hpp"
+#include "../../src/ui/terminal/console_player.hpp"
 
 
 namespace TetroTest {
