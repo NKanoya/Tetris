@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.29)
 project(Tetris)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_TOOLCHAIN_FILE "D:/DevTools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake")
+
+set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP_ON 0)
 
 # core modules
 add_subdirectory(src/core/matrix_state_manager)
@@ -51,4 +54,13 @@ target_link_libraries(Tetris
 #       PRIVATE test_bit_mask
 #       PRIVATE test_tetromino_tools
         PRIVATE test_console_player
+)
+
+target_link_options(Tetris PRIVATE
+        "SHELL:-s MODULARIZE=1"
+        "SHELL:-s EXPORT_ES6=1"
+        "SHELL:-s WASM=1"
+        "SHELL:-s ALLOW_MEMORY_GROWTH=1"
+        "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+        "SHELL:-s EXPORTED_FUNCTIONS=['_main']"
 )

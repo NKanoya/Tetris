@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <bitset>
+#include <stdint.h>
 
 class BitMask {
     std::vector<uint32_t> bits; // 用32位整数存储位

@@ -93,8 +93,7 @@ Tetromino::Tetromino(TetrominoType type, const Axis& axis, MatrixAdjacentStates 
     : m_matrix_state_pair(matrix_pair),
       m_rotate_state(RotateState::angle_0),
       m_type(type == TetrominoType::empty?(TetrominoType::tetro_O):type),
-      m_position(axis, get_init_shape(m_type))
-      ,
+      m_position(axis, get_init_shape(m_type)),
       m_is_bottom_out(false)
 {
     // TODO: print warning info into log

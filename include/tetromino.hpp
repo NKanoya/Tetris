@@ -34,6 +34,9 @@ enum class TetrominoType: unsigned char {
 struct TetrominoPosition {
     Axis axis;
     BlockShape blocks;
+
+    TetrominoPosition(Axis axis, BlockShape blocks):
+    axis(axis), blocks(blocks) {}
 };
 
 /**
