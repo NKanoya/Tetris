@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <bitset>
-#include <stdint.h>
+#include <cstdint>
 
 class BitMask {
     std::vector<uint32_t> bits; // 用32位整数存储位
@@ -29,6 +29,20 @@ public:
     inline const std::vector<uint32_t>& get_data() const {
         return bits;
     }
+
+    /**
+     * @brief get the origin pointer of the source bit mask matrix.
+     * @return ( <code>const void *</code> ) a constant pointer to the first element of the matrix.
+     *
+     * @note this function is intended for passing the matrix to the front end.
+     */
+     inline const void* get_source_bit_mask() const noexcept {
+         return reinterpret_cast<const void*>(&(bits[0]));
+     }
+
+     inline size_t get_source_matrix_size() const noexcept {
+         return bits.size() * sizeof(uint32_t);
+     }
 };
 
 #endif //TETRIS_BIT_MASK_HPP

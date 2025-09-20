@@ -98,6 +98,20 @@ public:
         return m_over_buffer;
     }
 
+    /**
+     * @brief get the origin pointer of the source tetromino type matrix.
+     * @return ( <code>const void *</code> ) a constant pointer to the first element of the matrix.
+     *
+     * @note this function is intended for passing the matrix to the front end.
+     */
+    inline const void* get_source_pointer() const noexcept {
+        return reinterpret_cast<const void*>(&(m_matrix[0]));
+    }
+
+    static inline size_t get_source_array_num() noexcept {
+        return (bmatrix_prop.x_size) * bmatrix_prop.y_size;
+    }
+
     friend class MatrixAdjacentStates;
 };
 
