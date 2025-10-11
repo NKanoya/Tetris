@@ -2836,13 +2836,14 @@ unexportedSymbols.forEach(unexportedRuntimeSymbol);
 function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
-function JS_UpdateMatrix(x,y,target_enum) { const col = y; const row = x; const block = document.getElementById('matrix-block-' + row + '-' + col); if(block) { if(target_enum !== 0) { block.style.backgroundColor = '#f0f0f0'; } else { block.style.backgroundColor = 'transparent'; } } else { console.log("no such block: [" + row + ',' + col + ']'); } }
+function JS_UpdateMatrix(x,y,target_enum) { const col = y; const row = x; const block = document.getElementById('matrix-block-' + row + '-' + col); if(block) { if(target_enum !== 0) { block.style.backgroundColor = '#f0f0f0'; } else { block.style.backgroundColor = 'transparent'; } } }
 
 // Imports from the Wasm binary.
 var ___getTypeName = makeInvalidEarlyAccess('___getTypeName');
 var _JS_process_loop = Module['_JS_process_loop'] = makeInvalidEarlyAccess('_JS_process_loop');
 var _output_in_JS = Module['_output_in_JS'] = makeInvalidEarlyAccess('_output_in_JS');
 var _main = Module['_main'] = makeInvalidEarlyAccess('_main');
+var _do_operation = Module['_do_operation'] = makeInvalidEarlyAccess('_do_operation');
 var _fflush = makeInvalidEarlyAccess('_fflush');
 var _strerror = makeInvalidEarlyAccess('_strerror');
 var _malloc = makeInvalidEarlyAccess('_malloc');
@@ -2868,6 +2869,7 @@ function assignWasmExports(wasmExports) {
   Module['_JS_process_loop'] = _JS_process_loop = createExportWrapper('JS_process_loop', 0);
   Module['_output_in_JS'] = _output_in_JS = createExportWrapper('output_in_JS', 1);
   Module['_main'] = _main = createExportWrapper('main', 2);
+  Module['_do_operation'] = _do_operation = createExportWrapper('do_operation', 1);
   _fflush = createExportWrapper('fflush', 1);
   _strerror = createExportWrapper('strerror', 1);
   _malloc = createExportWrapper('malloc', 1);

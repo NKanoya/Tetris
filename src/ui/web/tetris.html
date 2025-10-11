@@ -26,21 +26,11 @@
 
 <script src="js/matrix.js"></script>
 <!--<script src="js/Tetris.js" type="module"></script>-->
-<script src="../../../cmake-build-debug/Tetris.js" type="module"></script>
 <script type="module">
-    import getModule from '../../../cmake-build-debug/Tetris.js';
+    import getModule from './js/Tetris.js';
 
-    async function runWasm() {
-        const wasmModule = await getModule();
-
-        if (wasmModule && wasmModule.ccall) {
-            wasmModule.ccall('JS_process_loop', null, [], []);
-        } else {
-            console.error("Fail to Load Module!");
-        }
-    }
-
-    runWasm();
+    import { startTetrisLogic } from './js/operation.js';
+    startTetrisLogic(getModule);
 </script>
 </body>
 </html>

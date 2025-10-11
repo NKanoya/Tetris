@@ -34,6 +34,10 @@ add_executable(
         main.cpp
 )
 
+set_target_properties(Tetris PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../src/ui/web/js"
+)
+
 # find_library(EMBIND_LIB embind)
 
 target_link_libraries(Tetris
