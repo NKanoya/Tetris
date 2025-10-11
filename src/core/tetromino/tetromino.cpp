@@ -3,7 +3,7 @@
 ///
 
 #include "tetromino.hpp"
-#include "../../../include/matrix_state_manager.hpp"
+#include "matrix_state_manager.hpp"
 
 static constexpr std::array<BlockShape, 7> tetromino_shape = {{
       /*

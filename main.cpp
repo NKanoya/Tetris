@@ -1,15 +1,9 @@
 #include <iostream>
 #include "test/test_include.hpp"
-#include "include/matrix_state_manager.hpp"
-#include "include/time_event_system.hpp"
-#include "src/ui/web/emsdk/emscripten.hpp"
-#include <chrono>
-#include <emscripten/emscripten.h>
-#include <emscripten/bind.h>
-
+#include "matrix_state_manager.hpp"
+#include "time_event_system.hpp"
 
 #ifndef TETRIS_JS_OUTPUT
-
 int main() {
     MatrixStateManager& manager = MatrixStateManager::instance();
 
@@ -42,6 +36,11 @@ int main() {
 
 
 #ifdef TETRIS_JS_OUTPUT
+
+#include "emscripten.hpp"
+#include <chrono>
+#include <emscripten/emscripten.h>
+#include <emscripten/bind.h>
 
 constexpr int fps = 15;
 

@@ -3,7 +3,7 @@
 ///
 
 #include "../test_include.hpp"
-#include "../../include/bit_mask.hpp"
+#include "bit_mask.hpp"
 #include <iostream>
 
 

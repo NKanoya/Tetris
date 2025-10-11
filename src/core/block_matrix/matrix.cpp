@@ -2,7 +2,7 @@
 // Created by pilip on 2025/9/5.
 //
 
-#include "../../../include/matrix.hpp"
+#include "matrix.hpp"
 #include "tetromino.hpp"
 #include <algorithm>
 

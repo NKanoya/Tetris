@@ -3,7 +3,7 @@
 ///
 
 #include "../test_include.hpp"
-#include "../../include/adjacent_states.hpp"
+#include "adjacent_states.hpp"
 
 
 namespace TetroTest {

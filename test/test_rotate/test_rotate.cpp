@@ -3,7 +3,7 @@
 ///
 
 #include "../test_include.hpp"
-#include "../../include/rotate.hpp"
+#include "rotate.hpp"
 #include <memory>    // for std::unique_ptr
 
 namespace TetroTest {

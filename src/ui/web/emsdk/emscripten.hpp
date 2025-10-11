@@ -5,7 +5,7 @@
 #ifndef TETRIS_EMSCRIPTEN_HPP
 #define TETRIS_EMSCRIPTEN_HPP
 
-#include "../../../../include/matrix_state_manager.hpp"
+#include "matrix_state_manager.hpp"
 
 extern "C" {
     void output_in_JS(MatrixStateManager::ProcessData data);

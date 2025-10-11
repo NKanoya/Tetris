@@ -1,4 +1,4 @@
-#include "../../../include/bit_mask.hpp"
+#include "bit_mask.hpp"
 
 
 /**

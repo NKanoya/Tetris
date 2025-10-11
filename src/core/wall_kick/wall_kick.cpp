@@ -2,7 +2,7 @@
 /// @file @c src/rotate/rotate.cpp
 ///
 
-#include "../../../include/wall_kick.hpp"
+#include "wall_kick.hpp"
 
 static const std::array<const WallKickAttemptList, 4> wall_kick_attempts_for_normal = {{
      // state: 0 -> 90    || 180 -> 90

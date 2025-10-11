@@ -3,7 +3,7 @@
 ///
 
 #include "../test_include.hpp"
-#include "../../include/matrix.hpp"
+#include "matrix.hpp"
 
 
 namespace TetroTest {
