@@ -26,7 +26,7 @@ TetrominoType TetrominoGenerator::get_random_type() noexcept {
 }
 
 auto x_begin = 2;
-auto y_begin = BlockMatrixProperties::instance_read_only().y_size / 2 + 3;
+auto y_begin = BlockMatrixProperties::instance_read_only().y_size / 2 - 2;
 
 const Axis axis = {static_cast<ptrdiff_t>(x_begin),static_cast<ptrdiff_t>(y_begin)};
 

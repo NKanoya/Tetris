@@ -69,7 +69,7 @@ public:
     BlockMatrix();
     BlockMatrix(const BlockMatrix& oth);
 
-    inline TetrominoType& get_block(size_t x, size_t y) const;
+    inline TetrominoType& get_block(size_t x, size_t y) const noexcept;
 };
 
 class RunningBlockMatrix : public BlockMatrix {
@@ -115,16 +115,16 @@ public:
     friend class MatrixAdjacentStates;
 };
 
-inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const {
+inline TetrominoType &BlockMatrix::get_block(size_t x, size_t y) const noexcept {
     // bound check
     if(x < bmatrix_prop.x_size && y < bmatrix_prop.y_size)
         return m_matrix[y * bmatrix_prop.x_size + x];
 
     // Throw out_of_range exception
     if(x > bmatrix_prop.x_size - 1)
-        throw std::out_of_range("out of range: x-axis");
+        return m_matrix[0];
     else if (y > bmatrix_prop.y_size - 1)
-        throw std::out_of_range("out of range: y-axis");
+        return m_matrix[0];
     return m_matrix[0];
 }
 

@@ -5,6 +5,8 @@
 #ifndef TETRIS_time_event_system_HPP
 #define TETRIS_time_event_system_HPP
 
+#define TETRIS_JS_OUTPUT
+
 #include <chrono>
 #include <functional>
 #include <thread>
@@ -74,8 +76,13 @@ public:
     }
 
     void game_loop();
+
+#ifdef TETRIS_JS_OUTPUT
+    void init_loop() noexcept;
+#endif // TETRIS_JS_OUTPUT
 };
 
+#ifndef TETRIS_JS_OUTPUT
 template<size_t frame>
 void TickCircle<frame>::game_loop() {
     bool is_game_over;
@@ -141,5 +148,54 @@ void TickCircle<frame>::wait_for_next_frame() {
     // update previous frame time for next iteration
     m_prev_frame_time = current_time;
 }
+
+#endif // ifndef TETRIS_JS_OUTPUT
+
+#ifdef TETRIS_JS_OUTPUT
+
+#include <emscripten/emscripten.h>
+#include <emscripten/bind.h>
+
+template<size_t frame>
+void TickCircle<frame>::init_loop() noexcept {
+    auto init_data = m_process_func(Operation::None);
+    m_render_func(init_data);
+
+    // reset timing for the main loop
+    m_start_time = std::chrono::steady_clock::now();
+    m_prev_frame_time = m_start_time;
+    m_frame_count = 0;
+}
+
+template<size_t frame>
+void TickCircle<frame>::game_loop() {
+    static Operation operation;
+    if(m_forced_operation_frame > 0 && m_frame_count % m_forced_operation_frame == 0) {
+        operation = Operation::Down;
+    } else {
+        // recieve the queue
+        auto& queue = m_command_func();
+        auto opt = queue.try_pop();
+        if(opt.has_value()) {
+            operation = opt.value();
+        } else {
+            operation = Operation::None;
+        }
+    }
+
+    auto data = m_process_func(operation);
+    m_render_func(data);
+
+    // check if the game is over
+    bool is_game_over = data.is_game_over;
+
+    m_frame_count++;
+
+    if(is_game_over){
+        emscripten_cancel_main_loop();
+    }
+}
+
+#endif // TETRIS_JS_OUTPUT
 
 #endif //TETRIS_time_event_system_HPP
