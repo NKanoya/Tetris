@@ -46,30 +46,24 @@ constexpr int fps = 15;
 
 MatrixStateManager* manager;
 
-OperationQueue* op_q;
+std::unique_ptr<OperationQueue> op_q = std::make_unique<OperationQueue>();
 
 static TickCircle<fps>* circle_ptr = nullptr;
 
 void game_loop_function() {
-    try{
-        if (circle_ptr) {
-            circle_ptr->game_loop();
-        }
-    } catch (std::exception& e){
-        printf("%s",e.what());
+    if (circle_ptr) {
+        circle_ptr->game_loop();
     }
 }
 
 OperationQueue& command_func() {
-    op_q = new OperationQueue();
     return *op_q;
 }
 
 MatrixStateManager::ProcessData process_func(Operation op) {
     manager = &MatrixStateManager::instance();
     return manager -> process_operation(op);
-};
-
+}
 
 extern "C" {
     EMSCRIPTEN_KEEPALIVE
@@ -77,8 +71,6 @@ extern "C" {
         emscripten_set_main_loop(game_loop_function, fps, true);
     }
 }
-
-
 
 int main(){
     circle_ptr = new TickCircle<fps>(

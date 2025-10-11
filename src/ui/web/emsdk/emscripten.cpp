@@ -1,6 +1,8 @@
 #include "emscripten.hpp"
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
+#include "time_event_system.hpp"
+#include "operation.hpp"
 
 extern "C" {
     EMSCRIPTEN_KEEPALIVE
@@ -16,8 +18,6 @@ extern "C" {
               } else {
                   block.style.backgroundColor = 'transparent';
               }
-          } else {
-              console.log("no such block: [" + row + ',' + col + ']');
           }
 
       });
@@ -37,7 +37,16 @@ extern "C" {
         }
     }
 
+    extern std::unique_ptr<OperationQueue> op_q;
+
+    EMSCRIPTEN_KEEPALIVE
+    void do_operation(int op_num) {
+        op_q -> push(static_cast<Operation>(op_num));
+    }
+
 }
+
+
 
 
 

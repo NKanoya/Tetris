@@ -9,6 +9,8 @@
 
 extern "C" {
     void output_in_JS(MatrixStateManager::ProcessData data);
+
+    void add_operation(int op_num);
 }
 
 

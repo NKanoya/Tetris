@@ -72,9 +72,7 @@ target_link_options(Tetris PRIVATE
         "SHELL:-s WASM=1"
         "SHELL:-s ALLOW_MEMORY_GROWTH=1"
         "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
-        "SHELL:-s EXPORTED_FUNCTIONS=['_main','_JS_process_loop']"
+        "SHELL:-s EXPORTED_FUNCTIONS=['_main','_JS_process_loop','_do_operation']"
         "SHELL:--bind"
         "SHELL:-s EXCEPTION_CATCHING_ALLOWED=['c++']"
-        "SHELL:-g"
-        #"SHELL:-s DEMANGLE_SUPPORT=1"
 )
