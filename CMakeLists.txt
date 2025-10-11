@@ -18,7 +18,8 @@ add_subdirectory(src/core/operation)
 add_subdirectory(src/core/time_event_system)
 
 # ui modules
-add_subdirectory(src/ui/terminal)
+# add_subdirectory(src/ui/terminal)
+add_subdirectory(src/ui/web/emsdk)
 
 # test instance
 # add_subdirectory(test/test_block_matrix)
@@ -26,12 +27,14 @@ add_subdirectory(src/ui/terminal)
 # add_subdirectory(test/test_adjacent_states)
 # add_subdirectory(test/test_bit_mask)
 # add_subdirectory(test/test_tetromino_tools)
-add_subdirectory(test/test_console_player)
+# add_subdirectory(test/test_console_player)
 
 add_executable(
         Tetris
         main.cpp
 )
+
+# find_library(EMBIND_LIB embind)
 
 target_link_libraries(Tetris
         PRIVATE block_matrix
@@ -43,9 +46,10 @@ target_link_libraries(Tetris
         PRIVATE tetromino_tools
         PRIVATE operation
         PRIVATE time_event_system
+        PRIVATE web_emsdk
 
         # plugins
-        PRIVATE console_player
+#       PRIVATE console_player
 
         # test instance
 #       PRIVATE test_block_matrix
@@ -53,7 +57,9 @@ target_link_libraries(Tetris
 #       PRIVATE test_adjacent_states
 #       PRIVATE test_bit_mask
 #       PRIVATE test_tetromino_tools
-        PRIVATE test_console_player
+#       PRIVATE test_console_player
+
+        PRIVATE em_bind
 )
 
 target_link_options(Tetris PRIVATE
@@ -62,5 +68,9 @@ target_link_options(Tetris PRIVATE
         "SHELL:-s WASM=1"
         "SHELL:-s ALLOW_MEMORY_GROWTH=1"
         "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
-        "SHELL:-s EXPORTED_FUNCTIONS=['_main']"
+        "SHELL:-s EXPORTED_FUNCTIONS=['_main','_JS_process_loop']"
+        "SHELL:--bind"
+        "SHELL:-s EXCEPTION_CATCHING_ALLOWED=['c++']"
+        "SHELL:-g"
+        #"SHELL:-s DEMANGLE_SUPPORT=1"
 )
